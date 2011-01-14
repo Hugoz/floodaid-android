@@ -20,26 +20,27 @@
 	    android:layout_height="wrap_content"
 	    android:layout_width="wrap_content"/>
 	    
-		<TextView  
+		<Button  
 		android:id="@+id/link_find_people"
 	    style="@style/MenuItem.Blue"
 	    android:text="Find people who need help" />
-	    <TextView 
+	    <Button 
 		android:id="@+id/link_need_help"
 	    style="@style/MenuItem.Red"
 	    android:text="Register for help" />
-	    <TextView  
+	    <Button  
 	    android:layout_width="fill_parent" 
 	    style="@style/MenuItem.Blue"
 	    android:text="Register to help" />
-	    <TextView  
+	    <Button  
 	    android:layout_width="fill_parent" 
 	    style="@style/MenuItem.Red"
 	    android:text="Emergency contacts" />
 	    <Button 
-	    android:id="@+id/Button01" 
+	    android:id="@+id/btn_about" 
 	    android:layout_width="fill_parent" 
-	    style="@style/MenuItem.Blue" android:text="About FloodAid"/>
+	    style="@style/MenuItem.Blue" 
+	    android:text="About FloodAid"/>
 	    
     
     
