@@ -2,6 +2,7 @@
 
 = Layout =
 
+done  * Splash screen
   * Main template
   * Dashboard (landing page)
   * List people who need help
@@ -20,5 +21,6 @@
   * Build data objects
   * Retrieve data from server (by location, by criterias)
   * Send data to server (New user, new Request, new Offer, upload picture)
+  * Take picture with phone camera
   * Geolocate user
   * Menu options
