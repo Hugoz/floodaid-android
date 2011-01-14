@@ -4,6 +4,7 @@
 
 done
   * Splash screen
+  * About us
   * Terms of use
   * Credits
 
@@ -17,7 +18,6 @@ todo
   * Registration
   * Offer help
   * Request help
-  * About us
 
 
 
