@@ -34,7 +34,7 @@ public class Main extends Activity {
         
         setContentView(R.layout.main);
         
-        btn = (Button) findViewById(R.id.Button01);
+        btn = (Button) findViewById(R.id.btn_about);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	Intent aboutIntent = new Intent(getBaseContext(), About.class);
