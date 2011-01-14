@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/menu"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+	<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="50dp"
+    android:text="Find people who need help" />
+    <TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="50dp"
+    android:text="Register for help" />
+    <TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="50dp"
+    android:text="Register to help" />
+    <TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="50dp"
+    android:text="Emergency contacts" />
+    <TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="50dp"
+    android:text="About FloodAid" />
+</LinearLayout>
