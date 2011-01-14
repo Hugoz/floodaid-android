@@ -1,0 +1,5 @@
+#summary Useful links
+
+  * http://developer.android.com/guide/index.html
+  * https://github.com/skyred/DrupalCloud
+  
