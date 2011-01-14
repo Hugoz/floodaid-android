@@ -1,0 +1,24 @@
+#summary List of tasks to be completed before application release
+
+= Layout =
+
+* Main template
+* Dashboard (landing page)
+* List people who need help
+* Registration
+* Offer help
+* Request help
+* Emergency contacts
+* About us
+* Terms of use
+* Credits
+
+
+= Backend =
+
+* Communication with Drupal API. May use DrupalCloud lib from https://github.com/skyred/DrupalCloud
+* Build data objects
+* Retrieve data from server (by location, by criterias)
+* Send data to server (New user, new Request, new Offer, upload picture)
+* Geolocate user
+* Menu options
