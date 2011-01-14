@@ -4,25 +4,42 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-	<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="50dp"
-    android:text="Find people who need help" />
-    <TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="50dp"
-    android:text="Register for help" />
-    <TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="50dp"
-    android:text="Register to help" />
-    <TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="50dp"
-    android:text="Emergency contacts" />
-    <TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="50dp"
-    android:text="About FloodAid." />
+    android:background="#FFFFFF">
+    
+    <include layout="@layout/header"/>
+    
+    <LinearLayout 
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp">
+    
+	    <ImageView 
+	    android:src="@drawable/logo" 
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"/>
+	    
+		<TextView  
+		android:id="@+id/link_find_people"
+	    style="@style/MenuItem.Blue"
+	    android:text="Find people who need help" />
+	    <TextView 
+		android:id="@+id/link_need_help"
+	    style="@style/MenuItem.Red"
+	    android:text="Register for help" />
+	    <TextView  
+	    android:layout_width="fill_parent" 
+	    style="@style/MenuItem.Blue"
+	    android:text="Register to help" />
+	    <TextView  
+	    android:layout_width="fill_parent" 
+	    style="@style/MenuItem.Red"
+	    android:text="Emergency contacts" />
+	    <TextView  
+	    android:layout_width="fill_parent" 
+	    style="@style/MenuItem.Blue"
+	    android:text="About FloodAid." />
+    
+    </LinearLayout>
 </LinearLayout>

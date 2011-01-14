@@ -2,9 +2,7 @@ package au.com.floodaid.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.widget.LinearLayout;
 import au.com.floodaid.R;
 
 /**
@@ -30,7 +28,7 @@ public class Main extends Activity {
         
         setContentView(R.layout.main);
         
-        //TODO: Build menu items dynamically and add links to related activities
+        //TODO: Add onclick to menus
         
     }
 
