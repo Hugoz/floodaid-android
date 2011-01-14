@@ -36,10 +36,12 @@
 	    android:layout_width="fill_parent" 
 	    style="@style/MenuItem.Red"
 	    android:text="Emergency contacts" />
-	    <TextView  
+	    <Button 
+	    android:id="@+id/Button01" 
 	    android:layout_width="fill_parent" 
-	    style="@style/MenuItem.Blue"
-	    android:text="About FloodAid." />
+	    style="@style/MenuItem.Blue" android:text="About FloodAid"/>
+	    
     
-    </LinearLayout>
+    
+</LinearLayout>
 </LinearLayout>
