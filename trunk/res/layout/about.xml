@@ -28,7 +28,7 @@ android:id="@+id/Btn_Terms" />
 <Button android:text="Many thanks to"  
 android:layout_width="fill_parent"
 style="@style/MenuItem.Red"  
-android:id="@+id/Btn_Tanks" />
+android:id="@+id/Btn_Thanks" />
 
 
 </LinearLayout>

@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import au.com.floodaid.R;
 
-public class About extends Activity {
+public class About extends Activity implements OnClickListener {
 	// Logger constant
 	private static final String TAG = "About";
 	
@@ -26,24 +27,30 @@ public class About extends Activity {
         
         setContentView(R.layout.about);
         btnTerms = (Button) findViewById(R.id.Btn_Terms);
-        btnThanks = (Button) findViewById(R.id.Btn_Tanks);
+        btnTerms.setOnClickListener(this);
         
-        btnTerms.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	Intent termsIntent = new Intent(getBaseContext(), Terms.class);
-            	startActivity(termsIntent);
-            	//finish();
-            }
-        });
-        
-        btnThanks.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	Intent thanksIntent = new Intent(getBaseContext(), Thanks.class);
-            	startActivity(thanksIntent);
-            	//finish();
-            }
-        });
+        btnThanks = (Button) findViewById(R.id.Btn_Thanks);
+        btnThanks.setOnClickListener(this);
         
       //TODO: Build menu items dynamically and add links to related activities
+	}
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) 
+		{
+			case R.id.Btn_Terms:
+				nextActivity(Terms.class);
+			break;
+			case R.id.Btn_Thanks:
+				nextActivity(Thanks.class);
+			break;
+		}
+	}
+	
+	private void nextActivity(Class<?> intent)
+	{
+		Intent Intent = new Intent(getBaseContext(), intent);
+    	startActivity(Intent);
 	}
 }
