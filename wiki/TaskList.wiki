@@ -4,6 +4,11 @@
 
 done
   * Splash screen
+  * Terms of use
+  * Credits
+
+in progress
+  * Emergency contacts
 
 todo
   * Main template
@@ -12,10 +17,8 @@ todo
   * Registration
   * Offer help
   * Request help
-  * Emergency contacts
   * About us
-  * Terms of use
-  * Credits
+
 
 
 = Backend =
