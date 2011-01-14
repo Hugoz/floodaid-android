@@ -4,9 +4,9 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF">
-    
-    <include layout="@layout/header"/>
+    android:background="#ffffff">
+	
+    <include layout="@layout/header_contacs"/>
     
     <LinearLayout 
     android:orientation="vertical"
@@ -15,35 +15,26 @@
     android:paddingLeft="30dp"
     android:paddingRight="30dp">
     
-	    <ImageView 
+    <ImageView 
 	    android:src="@drawable/logo" 
 	    android:layout_height="wrap_content"
 	    android:layout_width="wrap_content"/>
 	    
 		<Button  
-		android:id="@+id/link_find_people"
+		android:id="@+id/call_ses"
 	    style="@style/MenuItem.Blue"
-	    android:text="Find people who need help" />
+	    android:text="SES" />
 	    <Button 
-		android:id="@+id/link_need_help"
+		android:id="@+id/call_police"
 	    style="@style/MenuItem.Red"
-	    android:text="Register for help" />
+	    android:text="Police" />
 	    <Button  
-	    android:layout_width="fill_parent" 
+		android:id="@+id/call_fire"
 	    style="@style/MenuItem.Blue"
-	    android:text="Register to help" />
-	    <Button  
-	    android:id="@+id/btn_contacts" 
-	    android:layout_width="fill_parent" 
-	    style="@style/MenuItem.Red"
-	    android:text="Emergency contacts" />
+	    android:text="Fire" />
 	    <Button 
-	    android:id="@+id/btn_about" 
-	    android:layout_width="fill_parent" 
-	    style="@style/MenuItem.Blue" 
-	    android:text="About FloodAid"/>
-	    
-    
-    
+		android:id="@+id/call_ambu"
+	    style="@style/MenuItem.Red"
+	    android:text="Ambulance" />
 </LinearLayout>
 </LinearLayout>

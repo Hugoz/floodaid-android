@@ -21,7 +21,7 @@ public class Main extends Activity {
 	private static final String TAG = "Main";
 	
 	// Objects in Activity
-	Button btn;
+	Button btnContacts, btnAbout;
 	
     /** 
      * Method called when activity is created
@@ -34,8 +34,17 @@ public class Main extends Activity {
         
         setContentView(R.layout.main);
         
-        btn = (Button) findViewById(R.id.btn_about);
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnContacts = (Button) findViewById(R.id.btn_contacts);
+        btnContacts.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	Intent contacsIntent = new Intent(getBaseContext(), Contacts.class);
+            	startActivity(contacsIntent);
+            	//finish();
+            }
+        });
+        
+        btnAbout = (Button) findViewById(R.id.btn_about);
+        btnAbout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	Intent aboutIntent = new Intent(getBaseContext(), About.class);
             	startActivity(aboutIntent);
