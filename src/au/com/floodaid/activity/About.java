@@ -13,7 +13,7 @@ public class About extends Activity {
 	private static final String TAG = "About";
 	
 	// Objects in Activity
-	Button btn;
+	Button btnTerms, btnThanks;
 	
     /** 
      * Method called when activity is created
@@ -25,18 +25,25 @@ public class About extends Activity {
         Log.d(TAG, "Creating About activity");
         
         setContentView(R.layout.about);
-        btn = (Button) findViewById(R.id.Button01);
+        btnTerms = (Button) findViewById(R.id.Btn_Terms);
+        btnThanks = (Button) findViewById(R.id.Btn_Tanks);
         
-        //TODO: Build menu items dynamically and add links to related activities
-        
-     // Eventhandlers
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnTerms.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	//Intent mainIntent = new Intent(this, About.class);
             	Intent termsIntent = new Intent(getBaseContext(), Terms.class);
             	startActivity(termsIntent);
             	//finish();
             }
         });
+        
+        btnThanks.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	Intent thanksIntent = new Intent(getBaseContext(), Thanks.class);
+            	startActivity(thanksIntent);
+            	//finish();
+            }
+        });
+        
+      //TODO: Build menu items dynamically and add links to related activities
 	}
 }
