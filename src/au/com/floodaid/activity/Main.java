@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import au.com.floodaid.R;
 
@@ -15,7 +16,7 @@ import au.com.floodaid.R;
  * 
  * @author hsterin
  */
-public class Main extends Activity {
+public class Main extends Activity implements OnClickListener {
 	
 	// Logger constant
 	private static final String TAG = "Main";
@@ -35,28 +36,32 @@ public class Main extends Activity {
         setContentView(R.layout.main);
         
         btnContacts = (Button) findViewById(R.id.btn_contacts);
-        btnContacts.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	Intent contacsIntent = new Intent(getBaseContext(), Contacts.class);
-            	startActivity(contacsIntent);
-            	//finish();
-            }
-        });
+        btnContacts.setOnClickListener(this);
         
         btnAbout = (Button) findViewById(R.id.btn_about);
-        btnAbout.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	Intent aboutIntent = new Intent(getBaseContext(), About.class);
-            	startActivity(aboutIntent);
-            	//finish();
-            }
-        });
+        btnAbout.setOnClickListener(this);
         
         //TODO: Build menu items dynamically and add links to related activities
-        
-        
-        
     }
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) 
+		{
+			case R.id.btn_contacts:
+				nextActivity(Contacts.class);
+			break;
+			case R.id.btn_about:
+				nextActivity(About.class);
+			break;
+		}
+	}
+	
+	private void nextActivity(Class<?> intent)
+	{
+		Intent Intent = new Intent(getBaseContext(), intent);
+    	startActivity(Intent);
+	}
 
 
     
