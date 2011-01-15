@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
     android:background="#FFFFFF">
     
-    <include layout="@layout/header_map"/>
-    
     <com.google.android.maps.MapView
     	android:id="@+id/mapview"
         android:layout_width="fill_parent" 
-        android:layout_height="200dp"
+        android:layout_height="fill_parent"
         android:enabled="true"
         android:clickable="true"
-        android:apiKey="@string/mapApiKey" />
-</LinearLayout>
+        android:apiKey="@string/mapApiKey" 
+    />
+    
+    <!--  For some reason de header doesn't like to be at the top of the code -->
+    <LinearLayout 
+    android:layout_alignParentTop="true"         
+    android:layout_height="wrap_content" 
+    android:layout_width="fill_parent">         
+    	<include layout="@layout/header_map" />     
+    </LinearLayout> 
+</RelativeLayout>
