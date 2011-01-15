@@ -1,10 +1,13 @@
 package au.com.floodaid.activity;
 
+import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import au.com.floodaid.R;
 import au.com.floodaid.maps.MapItemsOverlay;
 import au.com.floodaid.maps.PlaceOverlayItem;
@@ -18,13 +21,11 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-/**
- * This activity shows a Map centered on the selectedLocation and add an Overlay with places if available
- * 
- * @author hsterin
- */
-public class PlacesMap extends MapActivity {
-
+public class FindMap extends MapActivity {
+	
+	// Logger constant
+	private static final String TAG = "FindMap";
+	
 	// Map variables
 	private MapView mapView;
 	private MapController mapController;
@@ -38,33 +39,24 @@ public class PlacesMap extends MapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.mapview);
-	    
+        
+        Log.d(TAG, "Creating FindMap activity");
+        
+        setContentView(R.layout.find_map);
+        
 	    // Init the map view
 	    mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
-	    mapView.setSatellite(true); //Set satellite view
+	    mapView.setSatellite(false); //Set satellite view
 	    mapController = mapView.getController();
 	    mapController.setZoom(13); //Fixed Zoom Level
 	    
-	    // TODO: Get data passed by the previous action
-	    Location currentLocation = getIntent().getParcelableExtra("au.com.deloitte.online.android.prototype.provider.CurrentLocation"); 
-	    int selectedItemIdx = getIntent().getIntExtra("au.com.deloitte.online.android.prototype.provider.SelectedItemIndex", -1); 
-	    List<Place> placesList =  getIntent().getParcelableArrayListExtra("au.com.deloitte.online.android.prototype.provider.PlacesList");
+	    // TODO: Get Location from geolocator
+	    Location currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
 	    
-	    // TODO: Load data 
-	    if (placesList == null) {
+	    // TODO: Load data form Drupal
+	    List<Place> placesList = Collections.emptyList();
 
-	    }
-	    
-	    // Get selected item from the list
-	    if (selectedItemIdx > -1) {
-	    	Place selectedPlace = placesList.get(selectedItemIdx);
-	    	 // Center the map on the selected item
-	    	centerLocation(selectedPlace.getLocation());
-	    } else {
-	    	centerLocation(currentLocation);
-	    }
 	    
 	    // Create overlay items
 	    List<Overlay> mapOverlays = mapView.getOverlays();
@@ -80,8 +72,8 @@ public class PlacesMap extends MapActivity {
     	currentLoc.setMarker(currentLocMarker);
 	    overlay.addOverlay(currentLoc);
 
-	    // Add markers for all Places
-	    drawPlaces(placesList, selectedItemIdx);
+	    // Add markers for all points
+	    drawPlaces(placesList);
 	    
 	    // Add overlay to the map
 	    mapOverlays.add(overlay);
@@ -93,25 +85,16 @@ public class PlacesMap extends MapActivity {
      * 
      * @param placesList
      */
-    private void drawPlaces(List<Place> placesList, int selectedPlaceIndex) {
-//    	Drawable placeMarker = this.getResources().getDrawable(R.drawable.icon_green);
-//    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
-//    	Drawable selectedPlaceMarker = this.getResources().getDrawable(R.drawable.icon_red);
-//    	selectedPlaceMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
-//    	Drawable placeMarker = mLoader.getDrawable(selectedPlaceIndex);
+    private void drawPlaces(List<Place> placesList) {
+    	//TODO: use proper marker
+    	Drawable placeMarker = this.getResources().getDrawable(R.drawable.icon);
+    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
     	
     	// Create one OverlayItem per Place
     	for (Place p : placesList) {
     	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(p.getLocation());
     	    PlaceOverlayItem placeItem = new PlaceOverlayItem(point, p);
-    	    
-    	    // Check if this is the selected place to display a different icon
-    	    if (placesList.indexOf(p) == selectedPlaceIndex) {
-//    	    	placeItem.setMarker(placeMarker);
-    	    } else {
-//    	    	placeItem.setMarker(placeMarker);
-    	    }
-    	    
+    	    placeItem.setMarker(placeMarker);
     	    overlay.addOverlay(placeItem);
     	}
     }
@@ -133,4 +116,5 @@ public class PlacesMap extends MapActivity {
     {	
     	mapController.animateTo(LocationUtils.convertLocationToGeoPoint(location));
     }
+
 }

@@ -21,29 +21,25 @@
 	    android:layout_width="wrap_content"/>
 	    
 		<Button  
-		android:id="@+id/link_find_people"
+		android:id="@+id/btn_find_people"
 	    style="@style/MenuItem.Blue"
 	    android:text="Find people who need help" />
 	    <Button 
-		android:id="@+id/link_need_help"
+		android:id="@+id/btn_request_help"
 	    style="@style/MenuItem.Red"
-	    android:text="Register for help" />
+	    android:text="Request help" />
 	    <Button  
-	    android:layout_width="fill_parent" 
+	    android:id="@+id/btn_offer_help"
 	    style="@style/MenuItem.Blue"
-	    android:text="Register to help" />
+	    android:text="Offer help" />
 	    <Button  
 	    android:id="@+id/btn_contacts" 
-	    android:layout_width="fill_parent" 
 	    style="@style/MenuItem.Red"
 	    android:text="Emergency contacts" />
 	    <Button 
 	    android:id="@+id/btn_about" 
-	    android:layout_width="fill_parent" 
 	    style="@style/MenuItem.Blue" 
 	    android:text="About FloodAid"/>
-	    
     
-    
-</LinearLayout>
+	</LinearLayout>
 </LinearLayout>

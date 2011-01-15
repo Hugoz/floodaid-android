@@ -22,7 +22,7 @@ public class Main extends Activity implements OnClickListener {
 	private static final String TAG = "Main";
 	
 	// Objects in Activity
-	Button btnContacts, btnAbout;
+	Button btnContacts, btnAbout, btnFind;
 	
     /** 
      * Method called when activity is created
@@ -34,6 +34,9 @@ public class Main extends Activity implements OnClickListener {
         Log.d(TAG, "Creating Main activity");
         
         setContentView(R.layout.main);
+        
+        btnFind = (Button) findViewById(R.id.btn_find_people);
+        btnFind.setOnClickListener(this);
         
         btnContacts = (Button) findViewById(R.id.btn_contacts);
         btnContacts.setOnClickListener(this);
@@ -48,6 +51,9 @@ public class Main extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()) 
 		{
+			case R.id.btn_find_people:
+				nextActivity(FindMap.class);
+			break;
 			case R.id.btn_contacts:
 				nextActivity(Contacts.class);
 			break;
