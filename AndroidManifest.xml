@@ -23,8 +23,7 @@
 	    <activity android:name=".activity.Thanks" android:label="@string/app_name">
 	    </activity>
 	    
-	    <activity android:name=".activity.PlacesMap" android:label="@string/app_name"
-     		android:theme="@android:style/Theme.NoTitleBar" />
+	    <activity android:name=".activity.FindMap" />
 	    
 	    <uses-library android:name="com.google.android.maps" />
     </application>

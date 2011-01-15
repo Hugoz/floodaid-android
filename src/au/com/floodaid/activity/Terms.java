@@ -17,7 +17,7 @@ public class Terms extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        Log.d(TAG, "Creating About activity");
+        Log.d(TAG, "Creating Terms activity");
         
         setContentView(R.layout.terms);
         
