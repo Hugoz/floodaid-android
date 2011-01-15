@@ -6,6 +6,8 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import au.com.floodaid.R;
@@ -25,6 +27,11 @@ public class FindMap extends MapActivity {
 	
 	// Logger constant
 	private static final String TAG = "FindMap";
+	
+	// Locator vars
+	private LocationManager myNetLocationManager;
+	private LocationListener myNetLocationListener;
+	private Location currentLocation;
 	
 	// Map variables
 	private MapView mapView;
@@ -52,11 +59,17 @@ public class FindMap extends MapActivity {
 	    mapController.setZoom(13); //Fixed Zoom Level
 	    
 	    // TODO: Get Location from geolocator
-	    Location currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
+	    myNetLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        myNetLocationListener = new MyNetLocationListener();
+        myNetLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,myNetLocationListener);
+		currentLocation = myNetLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		
+		currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
+		centerLocation(currentLocation);
 	    
 	    // TODO: Load data form Drupal
 	    List<Place> placesList = Collections.emptyList();
-
+	    
 	    
 	    // Create overlay items
 	    List<Overlay> mapOverlays = mapView.getOverlays();
@@ -116,5 +129,24 @@ public class FindMap extends MapActivity {
     {	
     	mapController.animateTo(LocationUtils.convertLocationToGeoPoint(location));
     }
+    
+    private class MyNetLocationListener implements LocationListener{
 
+    	public void onLocationChanged(Location argLocation) {
+    		currentLocation = argLocation;
+    		//centerLocation(currentLocation);
+    	}
+    	
+    	public void onProviderDisabled(String provider) {
+    	// TODO Auto-generated method stub
+    	}
+
+    	public void onProviderEnabled(String provider) {
+    	// TODO Auto-generated method stub
+    	}
+
+    	public void onStatusChanged(String provider, int status, Bundle extras) {
+    	// TODO Auto-generated method stub
+    	}
+    };
 }
