@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- Key in a dedicated file makes commiting of other files easier -->
+    <string name="mapApiKey">02xTdWUzwukT2xXyM6xL9nRZ0jqaXPfwl_F8l_w</string>
+</resources>
