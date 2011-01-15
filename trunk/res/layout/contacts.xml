@@ -21,20 +21,20 @@
 	    android:layout_width="wrap_content"/>
 	    
 		<Button  
+		android:id="@+id/call_disaster_recovery_hotline"
+	    style="@style/MenuItem.Blue"
+	    android:text="Disaster Recovery Hotline" />
+	    <Button 
 		android:id="@+id/call_ses"
-	    style="@style/MenuItem.Blue"
+	    style="@style/MenuItem.Red"
 	    android:text="SES" />
-	    <Button 
-		android:id="@+id/call_police"
-	    style="@style/MenuItem.Red"
-	    android:text="Police" />
 	    <Button  
-		android:id="@+id/call_fire"
+		android:id="@+id/call_police_fire_ambulance"
 	    style="@style/MenuItem.Blue"
-	    android:text="Fire" />
+	    android:text="Police, Fire, Ambulance - 000" />
 	    <Button 
-		android:id="@+id/call_ambu"
+		android:id="@+id/call_police_link"
 	    style="@style/MenuItem.Red"
-	    android:text="Ambulance" />
+	    android:text="Non-urgent Incidents (PoliceLink)" />
 </LinearLayout>
 </LinearLayout>

@@ -10,65 +10,74 @@ import android.widget.Button;
 import au.com.floodaid.R;
 
 /**
- * Main activity 
- * Display the application dashboard (menu)
- * Called after splash screen
- * 
+ * Main activity Display the application dashboard (menu) Called after splash screen
  * @author hsterin
  */
 public class Main extends Activity implements OnClickListener {
-	
+
 	// Logger constant
 	private static final String TAG = "Main";
-	
-	// Objects in Activity
-	Button btnContacts, btnAbout, btnFind;
-	
-    /** 
-     * Method called when activity is created
-     */
-	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        Log.d(TAG, "Creating Main activity");
-        
-        setContentView(R.layout.main);
-        
-        btnFind = (Button) findViewById(R.id.btn_find_people);
-        btnFind.setOnClickListener(this);
-        
-        btnContacts = (Button) findViewById(R.id.btn_contacts);
-        btnContacts.setOnClickListener(this);
-        
-        btnAbout = (Button) findViewById(R.id.btn_about);
-        btnAbout.setOnClickListener(this);
-        
-        //TODO: Build menu items dynamically and add links to related activities
-    }
 
-	@Override
-	public void onClick(View view) {
-		switch (view.getId()) 
-		{
+	// Objects in Activity
+	Button btnContacts, btnAbout, btnRegisterToHelp, btnRegisterForHelp, btnFind;
+
+	/**
+	 * Method called when activity is created
+	 */
+	@Override public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		Log.d(TAG, "Creating Main activity");
+
+		setContentView(R.layout.main);
+		
+		btnFind = (Button) findViewById(R.id.btn_find_people);
+	        btnFind.setOnClickListener(this);
+
+		btnContacts = (Button) findViewById(R.id.btn_contacts);
+		btnContacts.setOnClickListener(this);
+
+		btnAbout = (Button) findViewById(R.id.btn_about);
+		btnAbout.setOnClickListener(this);
+
+		btnRegisterToHelp = (Button) findViewById(R.id.btn_offer_help);
+		btnRegisterToHelp.setOnClickListener(this);
+
+		btnRegisterForHelp = (Button) findViewById(R.id.btn_request_help);
+		btnRegisterForHelp.setOnClickListener(this);
+
+		//TODO: Build menu items dynamically and add links to related activities
+	}
+
+	@Override public void onClick(View view) {
+		switch (view.getId()) {
 			case R.id.btn_find_people:
 				nextActivity(FindMap.class);
 			break;
 			case R.id.btn_contacts:
 				nextActivity(Contacts.class);
-			break;
+				break;
 			case R.id.btn_about:
 				nextActivity(About.class);
-			break;
+				break;
+			case R.id.btn_offer_help:
+				nextActivity(RegistrationForm.class, "needHelp", false);
+				break;
+			case R.id.btn_request_help:
+				nextActivity(RegistrationForm.class, "needHelp", true);
+				break;
 		}
 	}
-	
-	private void nextActivity(Class<?> intent)
-	{
+
+	// start registration form class, for/to help depending on the boolean.
+	private void nextActivity(Class<?> intent, String parmName, boolean parmValue) {
 		Intent Intent = new Intent(getBaseContext(), intent);
-    	startActivity(Intent);
+		Intent.putExtra(parmName, parmValue);
+		startActivity(Intent);
 	}
 
-
-    
+	private void nextActivity(Class<?> intent) {
+		Intent Intent = new Intent(getBaseContext(), intent);
+		startActivity(Intent);
+	}
 }

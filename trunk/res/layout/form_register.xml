@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+  
+  <LinearLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+	>
+
+	<EditText
+	android:id = "@+id/form_email"
+	android:layout_width = "fill_parent"
+	android:layout_height = "wrap_content"
+	android:hint = "email"
+	android:inputType = "textEmailAddress"
+	>
+	</EditText>
+	
+	<EditText
+	android:id = "@+id/form_phone"
+	android:layout_width = "fill_parent"
+	android:layout_height = "wrap_content"
+	android:hint = "phone number"
+	android:inputType = "phone"
+	>
+	</EditText>
+	
+	<EditText
+	android:id = "@+id/form_street"
+	android:layout_width = "fill_parent"
+	android:layout_height = "wrap_content"
+	android:hint = "street"
+	>
+	</EditText>
+	
+	
+	<EditText
+	android:id = "@+id/form_postcode"
+	android:layout_width = "fill_parent"
+	android:layout_height = "wrap_content"
+	android:hint = "postcode"
+	android:inputType = "number"
+	>
+	</EditText>
+	
+	<Button
+	android:id = "@+id/form_submit"
+	android:text = "Next"
+	style="@style/MenuItem.Blue"
+	>
+	</Button>
+	
+	</LinearLayout>
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="#ffffff">
+  
+  <include layout="@layout/header_register_to_help" />
+  
+  <include android:id="@+id/form_register_to_help" layout="@layout/form_register" />
+  
+  
+</LinearLayout>
