@@ -3,6 +3,9 @@ package au.com.floodaid.activity;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -14,6 +17,7 @@ import au.com.floodaid.R;
 import au.com.floodaid.maps.MapItemsOverlay;
 import au.com.floodaid.maps.PlaceOverlayItem;
 import au.com.floodaid.provider.Place;
+import au.com.floodaid.util.InternetUtils;
 import au.com.floodaid.util.LocationUtils;
 
 import com.google.android.maps.GeoPoint;
@@ -68,8 +72,18 @@ public class FindMap extends MapActivity {
 		centerLocation(currentLocation);
 	    
 	    // TODO: Load data form Drupal
+		// TODO: Check api call
 	    List<Place> placesList = Collections.emptyList();
-	    
+//	    JSONObject helpListing = InternetUtils.executeApiCall("http://floodaid.com.au/api/help/list?api_key=abcdefg12345&user_token="+"");
+	    // TODO: Parse JSONObject
+	    // see http://androidosbeginning.blogspot.com/2010/11/json-parsing-example.html
+//	    try {
+//			String helpType = helpListing.getString("type");
+//		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+//		}
+
 	    
 	    // Create overlay items
 	    List<Overlay> mapOverlays = mapView.getOverlays();
