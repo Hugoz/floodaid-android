@@ -68,12 +68,15 @@ public class FindMap extends MapActivity {
         myNetLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,myNetLocationListener);
 		currentLocation = myNetLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		
-		currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
-		centerLocation(currentLocation);
+		// For Ronald to prevend the map sliding to Holland from time to time.
+		//currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
+		//centerLocation(currentLocation);
 	    
 	    // TODO: Load data form Drupal
 		// TODO: Check api call
 	    List<Place> placesList = Collections.emptyList();
+	    
+	    // get the JSON response from Drupal. Freezes GUI this way.
 //	    JSONObject helpListing = InternetUtils.executeApiCall("http://floodaid.com.au/api/help/list?api_key=abcdefg12345&user_token="+"");
 	    // TODO: Parse JSONObject
 	    // see http://androidosbeginning.blogspot.com/2010/11/json-parsing-example.html
@@ -148,7 +151,7 @@ public class FindMap extends MapActivity {
 
     	public void onLocationChanged(Location argLocation) {
     		currentLocation = argLocation;
-    		//centerLocation(currentLocation);
+    		centerLocation(currentLocation);
     	}
     	
     	public void onProviderDisabled(String provider) {
