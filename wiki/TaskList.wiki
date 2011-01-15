@@ -4,6 +4,8 @@
 
 done
   * Splash screen
+  * Main template
+  * Dashboard (landing page)
   * About us
   * Terms of use
   * Credits
@@ -12,8 +14,6 @@ in progress
   * Emergency contacts
 
 todo
-  * Main template
-  * Dashboard (landing page)
   * List people who need help
   * Registration
   * Offer help
@@ -33,3 +33,9 @@ todo
   * Take picture with phone camera
   * Geolocate user
   * Menu options
+
+
+= QA =
+
+todo
+  * Content, text update and QA on all pages
