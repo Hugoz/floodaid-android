@@ -11,4 +11,5 @@
 	\nRonald Nooij
 	\nJacobien Carstens
 	</string>
+	<string name="apiUrl">http://dev.floodaid.com.au/api/</string>
 </resources>
