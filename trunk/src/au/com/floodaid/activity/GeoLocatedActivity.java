@@ -36,6 +36,8 @@ public abstract class GeoLocatedActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        Log.d(TAG, "Creating GeoLocated activity");
+
         // Init location manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         
@@ -63,12 +65,6 @@ public abstract class GeoLocatedActivity extends Activity {
 	
     	// Get last known location from network
     	currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-    	
-    	// Get last know location from GPS
-    	Location lastGPSLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    	if (isBetterLocation(lastGPSLocation, currentLocation)) {
-    		currentLocation = lastGPSLocation;
-    	}
 	    
     	// If the last location is empty or too old, start a listener to get the current location from the system
     	if (currentLocation == null || DateUtils.getAge(currentLocation.getTime()) > FIVE_MINUTES) {
@@ -89,7 +85,7 @@ public abstract class GeoLocatedActivity extends Activity {
 		      };
 		
 		    // Register the listener with the Location Manager to receive location updates
-		    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 	    	
 	    } else {
 	    	processLocation(false);

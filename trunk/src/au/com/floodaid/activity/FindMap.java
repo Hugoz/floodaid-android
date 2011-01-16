@@ -3,21 +3,14 @@ package au.com.floodaid.activity;
 import java.util.Collections;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import au.com.floodaid.R;
 import au.com.floodaid.maps.MapItemsOverlay;
 import au.com.floodaid.maps.PlaceOverlayItem;
 import au.com.floodaid.provider.Place;
-import au.com.floodaid.util.InternetUtils;
 import au.com.floodaid.util.LocationUtils;
 
 import com.google.android.maps.GeoPoint;
@@ -31,11 +24,6 @@ public class FindMap extends MapActivity {
 	
 	// Logger constant
 	private static final String TAG = "FindMap";
-	
-	// Locator vars
-	private LocationManager myNetLocationManager;
-	private LocationListener myNetLocationListener;
-	private Location currentLocation;
 	
 	// Map variables
 	private MapView mapView;
@@ -62,15 +50,16 @@ public class FindMap extends MapActivity {
 	    mapController = mapView.getController();
 	    mapController.setZoom(13); //Fixed Zoom Level
 	    
-	    // TODO: Get Location from geolocator
-	    myNetLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        myNetLocationListener = new MyNetLocationListener();
-        myNetLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,myNetLocationListener);
-		currentLocation = myNetLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	    // Get Location passed by the Main activity
+	    Location currentLocation = getIntent().getParcelableExtra("au.com.floodaid.CurrentLocation"); 
 		
-		// For Ronald to prevend the map sliding to Holland from time to time.
-		//currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
-		//centerLocation(currentLocation);
+	    if (currentLocation == null) {
+	    	// Use default location Brisbane if cannot find network location
+	    	currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
+	    }
+	    
+	    // center map
+	    centerLocation(currentLocation);
 	    
 	    // TODO: Load data form Drupal
 		// TODO: Check api call
@@ -147,23 +136,4 @@ public class FindMap extends MapActivity {
     	mapController.animateTo(LocationUtils.convertLocationToGeoPoint(location));
     }
     
-    private class MyNetLocationListener implements LocationListener{
-
-    	public void onLocationChanged(Location argLocation) {
-    		currentLocation = argLocation;
-    		centerLocation(currentLocation);
-    	}
-    	
-    	public void onProviderDisabled(String provider) {
-    	// TODO Auto-generated method stub
-    	}
-
-    	public void onProviderEnabled(String provider) {
-    	// TODO Auto-generated method stub
-    	}
-
-    	public void onStatusChanged(String provider, int status, Bundle extras) {
-    	// TODO Auto-generated method stub
-    	}
-    };
 }
