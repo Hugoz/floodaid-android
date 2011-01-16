@@ -1,8 +1,8 @@
 package au.com.floodaid.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +16,7 @@ import au.com.floodaid.R;
  * 
  * @author hsterin
  */
-public class Main extends Activity implements OnClickListener {
+public class Main extends GeoLocatedActivity implements OnClickListener {
 
 	// Logger constant
 	private static final String TAG = "Main";
@@ -49,14 +49,13 @@ public class Main extends Activity implements OnClickListener {
 
 		btnRegisterForHelp = (Button) findViewById(R.id.btn_request_help);
 		btnRegisterForHelp.setOnClickListener(this);
-
 	}
 
 	@Override 
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_find_people:
-				nextActivity(FindMap.class);
+				nextActivity(FindMap.class, "au.com.floodaid.CurrentLocation", currentLocation);
 			break;
 			case R.id.btn_contacts:
 				nextActivity(Contacts.class);
@@ -65,23 +64,56 @@ public class Main extends Activity implements OnClickListener {
 				nextActivity(About.class);
 				break;
 			case R.id.btn_offer_help:
-				nextActivity(RegistrationForm.class, "needHelp", false);
+				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", false);
 				break;
 			case R.id.btn_request_help:
-				nextActivity(RegistrationForm.class, "needHelp", true);
+				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", true);
 				break;
 		}
 	}
 
-	// start registration form class, for/to help depending on the boolean.
+	/**
+	 * Start registration form class, for/to help depending on the boolean.
+	 * 
+	 * @param activity
+	 * @param parmName
+	 * @param parmValue
+	 */
 	private void nextActivity(Class<?> activity, String parmName, boolean parmValue) {
 		Intent intent = new Intent(getBaseContext(), activity);
 		intent.putExtra(parmName, parmValue);
 		startActivity(intent);
 	}
+	
+	/**
+	 * Start Next activity with a single intent parameter
+	 * 
+	 * @param activity
+	 * @param parmName
+	 * @param parmValue
+	 */
+	private void nextActivity(Class<?> activity, String parmName, Parcelable parmValue) {
+		Intent intent = new Intent(getBaseContext(), activity);
+		intent.putExtra(parmName, parmValue);
+		startActivity(intent);
+	}
 
+	/**
+	 * Start next activity without intent parameter
+	 * @param activity
+	 */
 	private void nextActivity(Class<?> activity) {
 		Intent Intent = new Intent(getBaseContext(), activity);
 		startActivity(Intent);
 	}
+	
+	@Override
+	protected void locationFailed() {
+		// Nothing to do
+	}
+
+	@Override
+	protected void locationSuccessful() {
+		// Nothing to do
+	};
 }
