@@ -26,7 +26,7 @@ public class RegistrationForm extends Activity {
 
 		// check if the user needs help or provides help
 		Bundle extras = getIntent().getExtras();
-		needHelp = extras.getBoolean("needHelp");
+		needHelp = extras.getBoolean("au.com.floodaid.needHelp");
 
 		// set the correct layout for the user (only header is different) 
 		if (needHelp)
