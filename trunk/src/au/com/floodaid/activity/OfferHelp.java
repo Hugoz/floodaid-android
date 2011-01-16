@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import au.com.floodaid.R;
 
-public class RegisterToHelp extends Activity {
+public class OfferHelp extends Activity {
 
 	private static final String TAG = "Register to help";
 
