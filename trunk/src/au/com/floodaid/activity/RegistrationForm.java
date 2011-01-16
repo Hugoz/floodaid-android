@@ -11,15 +11,15 @@ import au.com.floodaid.R;
 
 public class RegistrationForm extends Activity {
 
-	private static final String TAG = "Registration form";
+	private static final String TAG = "RegistrationForm";
 
 	EditText email, phone, street, postcode;
 	Button submit;
 
 	boolean needHelp = false;
 
-	//TODO: BUG somehow the xml include doesn't work well, you only see the header, not the form, the form elements are available in the activity though.
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@Override 
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Log.d(TAG, "Creating personal information form");

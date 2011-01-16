@@ -10,7 +10,10 @@ import android.widget.Button;
 import au.com.floodaid.R;
 
 /**
- * Main activity Display the application dashboard (menu) Called after splash screen
+ * Main activity 
+ * Displays the application dashboard (menu) 
+ * Called after splash screen
+ * 
  * @author hsterin
  */
 public class Main extends Activity implements OnClickListener {
@@ -24,7 +27,8 @@ public class Main extends Activity implements OnClickListener {
 	/**
 	 * Method called when activity is created
 	 */
-	@Override public void onCreate(Bundle savedInstanceState) {
+	@Override 
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Log.d(TAG, "Creating Main activity");
@@ -32,7 +36,7 @@ public class Main extends Activity implements OnClickListener {
 		setContentView(R.layout.main);
 		
 		btnFind = (Button) findViewById(R.id.btn_find_people);
-	        btnFind.setOnClickListener(this);
+	    btnFind.setOnClickListener(this);
 
 		btnContacts = (Button) findViewById(R.id.btn_contacts);
 		btnContacts.setOnClickListener(this);
@@ -46,10 +50,10 @@ public class Main extends Activity implements OnClickListener {
 		btnRegisterForHelp = (Button) findViewById(R.id.btn_request_help);
 		btnRegisterForHelp.setOnClickListener(this);
 
-		//TODO: Build menu items dynamically and add links to related activities
 	}
 
-	@Override public void onClick(View view) {
+	@Override 
+	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_find_people:
 				nextActivity(FindMap.class);
@@ -70,14 +74,14 @@ public class Main extends Activity implements OnClickListener {
 	}
 
 	// start registration form class, for/to help depending on the boolean.
-	private void nextActivity(Class<?> intent, String parmName, boolean parmValue) {
-		Intent Intent = new Intent(getBaseContext(), intent);
-		Intent.putExtra(parmName, parmValue);
-		startActivity(Intent);
+	private void nextActivity(Class<?> activity, String parmName, boolean parmValue) {
+		Intent intent = new Intent(getBaseContext(), activity);
+		intent.putExtra(parmName, parmValue);
+		startActivity(intent);
 	}
 
-	private void nextActivity(Class<?> intent) {
-		Intent Intent = new Intent(getBaseContext(), intent);
+	private void nextActivity(Class<?> activity) {
+		Intent Intent = new Intent(getBaseContext(), activity);
 		startActivity(Intent);
 	}
 }
