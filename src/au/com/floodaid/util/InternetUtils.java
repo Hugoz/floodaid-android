@@ -67,6 +67,27 @@ public class InternetUtils {
 	}
 	
 	/**
+	 * Get Terms of use via API
+	 * This is not creating a new thread and therefore it will freeze the main thread until Terms of use has been retrieved.
+	 *  
+	 * @param url
+	 * @return String
+	 */
+	public static String getTOC(String url) {
+		try {
+			URL urlObj = new URL(url);
+			InputStream is = (InputStream) urlObj.getContent();
+			String result = convertStreamToString(is);
+			// TODO: result needs unescaping
+			return result;
+			
+		} catch (Exception e) {
+			Log.e(TAG, "Unable to execute API call " + url, e);
+			return null;
+		}
+	}
+	
+	/**
     *
     * @param is
     * @return String
