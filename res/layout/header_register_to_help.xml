@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/header_register_to_help"
-    style="@style/Header"
-    android:text="Register To Help" />

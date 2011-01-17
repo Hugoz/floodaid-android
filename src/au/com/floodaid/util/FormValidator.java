@@ -1,6 +1,5 @@
 package au.com.floodaid.util;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FormValidator {
@@ -14,7 +13,7 @@ public class FormValidator {
 	 * @param emailAddress for validation
 	 * @return true valid email, false invalid email
 	 */
-	public boolean validateEmail(final String emailAddress) {
+	public static boolean validateEmail(final String emailAddress) {
 		return validate(EMAIL_PATTERN, emailAddress);
 	}
 
@@ -23,21 +22,20 @@ public class FormValidator {
 	 * @param postcode for validation
 	 * @return true valid postcode, false invalid postcode
 	 */
-	public boolean validatePostcode(final String postcode) {
-		return validate(POSTCODE_PATTERN, postcode);
+	public static boolean validatePostcode(final String postcode) {
+		return !validate(POSTCODE_PATTERN, postcode);
 	}
 
-	public boolean validatePhoneNumber(final String phoneNumber) {
-		return validate(PHONE_NUMBER_PATTERN, phoneNumber);
+	public static boolean validatePhoneNumber(final String phoneNumber) {
+		return !validate(PHONE_NUMBER_PATTERN, phoneNumber);
 	}
 
 	/**
 	 * Validator
+	 * @return true if criterias are valid
 	 */
-	public boolean validate(String regexp, String input) {
-		Pattern pattern = Pattern.compile(regexp);
-		Matcher matcher = pattern.matcher(input);
-		return matcher.matches();
+	public static boolean validate(String regexp, String input) {
+		return Pattern.matches(regexp, input);
 	}
 
 }

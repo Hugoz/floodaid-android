@@ -7,9 +7,15 @@
     android:background="#FFFFFF"
 	>
 	
+	<TextView
+	android:id="@+id/header_title"
+    style="@style/Header"
+    android:text="Login" />
+    
 	<LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_below="@id/header_title"
     android:orientation="vertical"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
@@ -30,42 +36,11 @@
 		style="@style/EditItem.Red"		
 		/>
 		
-		<EditText
-		android:id = "@+id/form_phone"
-		android:hint = "Phone number"
-		android:inputType = "phone"
-		style="@style/EditItem.Blue"		
-		/>
-		
-		<EditText
-		android:id = "@+id/form_street"
-		android:hint = "Street"
-		android:inputType="text"
-		style="@style/EditItem.Red"		
-		/>
-		
-		<EditText
-		android:id = "@+id/form_postcode"
-		android:hint = "Postcode"
-		android:inputType = "number"
-		style="@style/EditItem.Blue"	
-		/>
-		
-		<TextView
-		android:id = "@+id/btn_login"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:textSize="15dp"
-		android:textColor="#000000"
-		android:text = "If you already have a FloodAid.com.au account, click here to login"
-		android:layout_marginTop="20dp"
-		/>
-		
 	</LinearLayout>
 
 	<Button
 	android:id = "@+id/form_submit"
-	android:text = "Next"
+	android:text = "Login"
 	style="@style/Button"
 	android:layout_alignParentBottom="true"
 	/>

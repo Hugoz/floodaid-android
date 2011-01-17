@@ -4,20 +4,46 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF">
     
+    <TextView
+	android:id="@+id/header_title"
+    style="@style/Header"
+    android:text="People who need help"
+    android:layout_alignParentTop="true" 
+    />  
+    
+    <LinearLayout 
+    android:id="@+id/bottom_buttons" 
+    android:layout_alignParentBottom="true"       
+    android:layout_height="50dp" 
+    android:layout_width="fill_parent"
+    android:orientation="horizontal"
+    android:background="#1FBDEF"> 
+	    <Button  
+			android:id="@+id/btn_offer_help"
+		    style="@style/MapButton"
+		    android:text="Offer help" />
+	    <Button  
+			android:id="@+id/btn_request_help"
+		    style="@style/MapButton"
+		    android:layout_marginRight="2dp"
+		    android:layout_marginLeft="2dp"
+		    android:layout_toRightOf="@id/btn_offer_help"
+		    android:text="Request help" />
+	    <Button  
+			android:id="@+id/btn_emergency"
+		    style="@style/MapButton"
+		    android:layout_toRightOf="@id/btn_request_help"
+		    android:text="Emergency contacts" />
+    </LinearLayout>
+    
     <com.google.android.maps.MapView
     	android:id="@+id/mapview"
         android:layout_width="fill_parent" 
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_title"
+        android:layout_above="@id/bottom_buttons"
         android:enabled="true"
         android:clickable="true"
         android:apiKey="@string/mapApiKey" 
     />
-    
-    <!--  For some reason de header doesn't like to be at the top of the code -->
-    <LinearLayout 
-    android:layout_alignParentTop="true"         
-    android:layout_height="wrap_content" 
-    android:layout_width="fill_parent">         
-    	<include layout="@layout/header_map" />     
-    </LinearLayout> 
 </RelativeLayout>

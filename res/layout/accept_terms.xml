@@ -6,7 +6,10 @@
   android:layout_height="fill_parent"
   android:background = "#ffffff">
   
-  <include layout="@layout/header_register_to_help"/>
+  <TextView
+	android:id="@+id/header_title"
+    style="@style/Header"
+    android:text="Register" />
   
   <LinearLayout
   android:orientation = "vertical"

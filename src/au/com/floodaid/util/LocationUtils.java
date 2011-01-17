@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 
@@ -18,6 +19,9 @@ import com.google.android.maps.GeoPoint;
  */
 public class LocationUtils {
 
+	// Logger constant
+	private static final String TAG = "LocationUtils";
+	
 	// Max distance in km to search from a given location
 	public static final int MAX_DISTANCE = 500;
 	
@@ -85,11 +89,13 @@ public class LocationUtils {
                 Location loc = new Location(LocationManager.NETWORK_PROVIDER);
                 loc.setLatitude(addresses.get(0).getLatitude());
                 loc.setLongitude(addresses.get(0).getLongitude());
+                Log.d(TAG, "Geolocation successful for address " + address);
                 return loc;
             }    
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "Cannot geolocate address " + address);
         return null;
 	}
 }

@@ -6,7 +6,10 @@
     android:layout_height="fill_parent"
     android:background="#ffffff">
 	
-    <include layout="@layout/header_contacs"/>
+    <TextView 
+	android:id="@+id/header_title"
+    style="@style/Header"
+    android:text="Emergency contacs" />
     
     <LinearLayout 
     android:orientation="vertical"
@@ -17,8 +20,10 @@
     
     <ImageView 
 	    android:src="@drawable/logo" 
-	    android:layout_height="wrap_content"
-	    android:layout_width="wrap_content"/>
+	    android:layout_height="100dp"
+	    android:layout_width="wrap_content"
+	    android:layout_marginTop="10dp" 
+	    android:layout_marginBottom="10dp"/>
 	    
 		<Button  
 		android:id="@+id/call_disaster_recovery_hotline"
