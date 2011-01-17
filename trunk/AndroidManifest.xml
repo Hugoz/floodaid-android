@@ -3,7 +3,7 @@
       package="au.com.floodaid"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/logo" android:label="@string/app_name" android:debuggable="true" android:theme="@android:style/Theme.NoTitleBar">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true" android:theme="@android:style/Theme.NoTitleBar">
 		
 		<activity android:name=".activity.SplashScreen" android:label="@string/app_name">
             <intent-filter>
@@ -14,21 +14,23 @@
         
 		<activity android:name=".activity.Main" android:label="@string/app_name">
 	    </activity>
-	    <activity android:name=".activity.Contacts" android:label="@string/app_name">
+	    <activity android:name=".activity.Contacts" >
 	    </activity>
-	    <activity android:name=".activity.About" android:label="@string/app_name">
+	    <activity android:name=".activity.About" >
 	    </activity>
-	    <activity android:name=".activity.Terms" android:label="@string/app_name">
+	    <activity android:name=".activity.Terms" >
 	    </activity>
-	    <activity android:name=".activity.Thanks" android:label="@string/app_name">
+	    <activity android:name=".activity.Thanks" >
 	    </activity>
-	    <activity android:name=".activity.RegistrationForm" android:label="@string/app_name">
+	    <activity android:name=".activity.RegistrationForm" >
 	    </activity>
-	    <activity android:name=".activity.OfferHelp" android:label="@string/app_name">
+	    <activity android:name=".activity.Login" >
 	    </activity>
-	    <activity android:name=".activity.RequestHelp" android:label="@string/app_name">
+	    <activity android:name=".activity.OfferHelp" >
 	    </activity>
-	    <activity android:name=".activity.AcceptTerms" android:label="@string/app_name">
+	    <activity android:name=".activity.RequestHelp" >
+	    </activity>
+	    <activity android:name=".activity.AcceptTerms" >
 	    </activity>
 	    
 	    

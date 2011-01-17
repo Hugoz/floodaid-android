@@ -3,10 +3,14 @@ package au.com.floodaid.activity;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import au.com.floodaid.R;
 import au.com.floodaid.maps.MapItemsOverlay;
 import au.com.floodaid.maps.PlaceOverlayItem;
@@ -20,7 +24,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-public class FindMap extends MapActivity {
+public class FindMap extends MapActivity implements OnClickListener {
 	
 	// Logger constant
 	private static final String TAG = "FindMap";
@@ -31,6 +35,8 @@ public class FindMap extends MapActivity {
 	
 	// Map overlay that contains the markers
 	private MapItemsOverlay overlay;
+	
+	Button btnContacts, btnRegisterToHelp, btnRegisterForHelp;
 	
 	/** 
      * Method called when activity is created
@@ -43,6 +49,16 @@ public class FindMap extends MapActivity {
         
         setContentView(R.layout.find_map);
         
+        // Register onclick for buttons 
+        btnRegisterToHelp = (Button) findViewById(R.id.btn_offer_help);
+		btnRegisterToHelp.setOnClickListener(this);
+
+		btnRegisterForHelp = (Button) findViewById(R.id.btn_request_help);
+		btnRegisterForHelp.setOnClickListener(this);
+
+		btnContacts = (Button) findViewById(R.id.btn_emergency);
+		btnContacts.setOnClickListener(this);
+
 	    // Init the map view
 	    mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
@@ -55,7 +71,7 @@ public class FindMap extends MapActivity {
 		
 	    if (currentLocation == null) {
 	    	// Use default location Brisbane if cannot find network location
-	    	currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD");
+	    	currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD, Australia");
 	    }
 	    
 	    // center map
@@ -79,14 +95,14 @@ public class FindMap extends MapActivity {
 	    
 	    // Create overlay items
 	    List<Overlay> mapOverlays = mapView.getOverlays();
-	    Drawable defaultMarker = this.getResources().getDrawable(R.drawable.icon);
+	    Drawable defaultMarker = this.getResources().getDrawable(R.drawable.map_marker);
 	    defaultMarker.setBounds(0, 0, defaultMarker.getIntrinsicWidth(), defaultMarker.getIntrinsicHeight());
 	    overlay = new MapItemsOverlay(defaultMarker, this);
 
 	    // Draw Current location on the map
 	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(currentLocation);
 	    OverlayItem currentLoc = new OverlayItem(point, "Current location", "This is your current location");
-	    Drawable currentLocMarker = this.getResources().getDrawable(R.drawable.icon);
+	    Drawable currentLocMarker = this.getResources().getDrawable(R.drawable.map_marker);
 	    currentLocMarker.setBounds(0, 0, currentLocMarker.getIntrinsicWidth(), currentLocMarker.getIntrinsicHeight());
     	currentLoc.setMarker(currentLocMarker);
 	    overlay.addOverlay(currentLoc);
@@ -105,8 +121,7 @@ public class FindMap extends MapActivity {
      * @param placesList
      */
     private void drawPlaces(List<Place> placesList) {
-    	//TODO: use proper marker
-    	Drawable placeMarker = this.getResources().getDrawable(R.drawable.icon);
+    	Drawable placeMarker = this.getResources().getDrawable(R.drawable.map_marker);
     	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
     	
     	// Create one OverlayItem per Place
@@ -133,7 +148,47 @@ public class FindMap extends MapActivity {
      */
     private void centerLocation(Location location)
     {	
-    	mapController.animateTo(LocationUtils.convertLocationToGeoPoint(location));
+    	if (location != null) {
+    		mapController.animateTo(LocationUtils.convertLocationToGeoPoint(location));
+    	}
     }
+    
+
+	@Override 
+	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.btn_emergency:
+				nextActivity(Contacts.class);
+				break;
+			case R.id.btn_offer_help:
+				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", false);
+				break;
+			case R.id.btn_request_help:
+				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", true);
+				break;
+		}
+	}
+
+	/**
+	 * Start registration form class, for/to help depending on the boolean.
+	 * 
+	 * @param activity
+	 * @param parmName
+	 * @param parmValue
+	 */
+	private void nextActivity(Class<?> activity, String parmName, boolean parmValue) {
+		Intent intent = new Intent(getBaseContext(), activity);
+		intent.putExtra(parmName, parmValue);
+		startActivity(intent);
+	}
+	
+	/**
+	 * Start next activity without intent parameter
+	 * @param activity
+	 */
+	private void nextActivity(Class<?> activity) {
+		Intent Intent = new Intent(getBaseContext(), activity);
+		startActivity(Intent);
+	}
     
 }

@@ -6,7 +6,10 @@
     android:layout_height="fill_parent"
     android:background="#ffffff">
 	
-    <include layout="@layout/header_about"/>
+    <TextView
+	android:id="@+id/header_title"
+    style="@style/Header"
+    android:text="About" />
     
     <LinearLayout 
     android:orientation="vertical"
@@ -17,8 +20,10 @@
 
 <ImageView 
 	    android:src="@drawable/logo" 
-	    android:layout_height="wrap_content"
-	    android:layout_width="wrap_content"/>
+	    android:layout_height="100dp"
+	    android:layout_width="wrap_content"
+	    android:layout_marginTop="10dp" 
+	    android:layout_marginBottom="10dp"/>
 	    
 <Button android:text="Terms of use" 
 android:layout_width="fill_parent" 

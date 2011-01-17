@@ -17,8 +17,10 @@
     
 	    <ImageView 
 	    android:src="@drawable/logo" 
-	    android:layout_height="wrap_content"
-	    android:layout_width="wrap_content"/>
+	    android:layout_height="100dp"
+	    android:layout_width="wrap_content"
+	    android:layout_marginTop="10dp" 
+	    android:layout_marginBottom="10dp" />
 	    
 		<Button  
 		android:id="@+id/btn_find_people"

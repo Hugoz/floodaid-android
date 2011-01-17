@@ -6,9 +6,10 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF">
     
-	<include layout="@layout/header_register_to_help"/>
+	<TextView
+	android:id="@+id/header_title"
+    style="@style/Header"
+    android:text="Offer Help" />
 	
-	
-
 
 </LinearLayout>
