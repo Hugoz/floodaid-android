@@ -10,6 +10,19 @@
 	android:id="@+id/header_title"
     style="@style/Header"
     android:text="Offer Help" />
-	
+    
+     
+    
+    
+   		<TextView
+    	style = "@style/MenuItem.Red"
+    	android:layout_width = "fill_parent"
+    	android:layout_height = "wrap_content"
+    	android:paddingLeft = "30dp" 
+    	android:paddingRight = "30dp"
+    	android:text = "I can help with...">
+    	</TextView>
+
+		<include layout="@layout/categories"/>
 
 </LinearLayout>
