@@ -9,13 +9,14 @@ done
   * About us
   * Terms of use
   * Credits
+  * Emergency contacts
+  * Registration
 
 in progress
-  * Emergency contacts
+
 
 todo
   * List people who need help
-  * Registration
   * Offer help
   * Request help
 
@@ -24,6 +25,7 @@ todo
 = Backend =
 
 done
+  * Geolocate user
 
 todo
   * Communication with Drupal API. May use DrupalCloud lib from https://github.com/skyred/DrupalCloud
@@ -31,7 +33,6 @@ todo
   * Retrieve data from server (by location, by criterias)
   * Send data to server (New user, new Request, new Offer, upload picture)
   * Take picture with phone camera
-  * Geolocate user
   * Menu options
 
 
