@@ -61,14 +61,14 @@ public class RegistrationForm extends Activity {
 		phoneEdit = (EditText) findViewById(R.id.form_phone);
 		streetEdit = (EditText) findViewById(R.id.form_street);
 		postcodeEdit = (EditText) findViewById(R.id.form_postcode);
-		
+
 		submit = (Button) findViewById(R.id.form_submit);
 		submit.setOnClickListener(submitFormListener);
-		
+
 		loginLink = (TextView) findViewById(R.id.btn_login);
 		loginLink.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
+
+			@Override public void onClick(View v) {
 				nextActivity(Login.class);
 			}
 		});
@@ -80,10 +80,10 @@ public class RegistrationForm extends Activity {
 	private OnClickListener submitFormListener = new OnClickListener() {
 
 		@Override public void onClick(View v) {
-			
+
 			// Init error messages
 			StringBuilder errors = new StringBuilder();
-			
+
 			if (!FormValidator.validateEmail(emailEdit.getText().toString())) {
 				errors.append("Your email is invalid\n");
 			}
@@ -98,12 +98,12 @@ public class RegistrationForm extends Activity {
 				errors.append("Your postcode is invalid\n");
 			}
 			if (streetEdit.getText() == null || "".equals(streetEdit.getText().toString())) {
-				errors.append("Your Street is invalid\n");
+				errors.append("Your street is invalid\n");
 			}
 
 			if (errors.length() == 0) {
 				Log.d(TAG, "Validation successful");
-				
+
 				Intent intent = new Intent(getBaseContext(), AcceptTerms.class);
 				intent.putExtra("email", emailEdit.getText());
 				intent.putExtra("password", passwordEdit.getText());

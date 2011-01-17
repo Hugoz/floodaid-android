@@ -14,6 +14,8 @@ public class AcceptTerms extends Activity {
 	CheckBox checkbox;
 	Button btnRegister;
 
+	boolean needHelp;
+
 	CharSequence email, phone, postcode, street;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class AcceptTerms extends Activity {
 		phone = intent.getCharSequenceExtra("au.com.floodaid.phone");
 		postcode = intent.getCharSequenceExtra("au.com.floodaid.postcode");
 		street = intent.getCharSequenceExtra("au.com.floodaid.street");
+		needHelp = intent.getBooleanExtra("needHelp", false);
 
 	}
 
@@ -44,10 +47,23 @@ public class AcceptTerms extends Activity {
 		@Override public void onClick(View v) {
 			if (checkbox.isChecked()) {
 				//TODO: register with floodaid.com.au using API
+				if (needHelp)
+					nextActivity(RequestHelp.class);
+				else
+					nextActivity(OfferHelp.class);
 			} else {
 				//TODO: show error
 			}
 		}
 	};
+
+	/**
+	 * Start next activity without intent parameter
+	 * @param activity
+	 */
+	private void nextActivity(Class<?> activity) {
+		Intent Intent = new Intent(getBaseContext(), activity);
+		startActivity(Intent);
+	}
 
 }

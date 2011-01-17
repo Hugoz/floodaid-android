@@ -10,10 +10,8 @@ import android.widget.Button;
 import au.com.floodaid.R;
 
 /**
- * Main activity 
- * Displays the application dashboard (menu) 
+ * Main activity Displays the application dashboard (menu) 
  * Called after splash screen
- * 
  * @author hsterin
  */
 public class Main extends GeoLocatedActivity implements OnClickListener {
@@ -27,16 +25,15 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 	/**
 	 * Method called when activity is created
 	 */
-	@Override 
-	public void onCreate(Bundle savedInstanceState) {
+	@Override public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Log.d(TAG, "Creating Main activity");
 
 		setContentView(R.layout.main);
-		
+
 		btnFind = (Button) findViewById(R.id.btn_find_people);
-	    btnFind.setOnClickListener(this);
+		btnFind.setOnClickListener(this);
 
 		btnContacts = (Button) findViewById(R.id.btn_contacts);
 		btnContacts.setOnClickListener(this);
@@ -51,12 +48,11 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 		btnRegisterForHelp.setOnClickListener(this);
 	}
 
-	@Override 
-	public void onClick(View view) {
+	@Override public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_find_people:
 				nextActivity(FindMap.class, "au.com.floodaid.CurrentLocation", currentLocation);
-			break;
+				break;
 			case R.id.btn_contacts:
 				nextActivity(Contacts.class);
 				break;
@@ -74,7 +70,6 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 
 	/**
 	 * Start registration form class, for/to help depending on the boolean.
-	 * 
 	 * @param activity
 	 * @param parmName
 	 * @param parmValue
@@ -84,10 +79,9 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 		intent.putExtra(parmName, parmValue);
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * Start Next activity with a single intent parameter
-	 * 
 	 * @param activity
 	 * @param parmName
 	 * @param parmValue
@@ -106,13 +100,13 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 		Intent Intent = new Intent(getBaseContext(), activity);
 		startActivity(Intent);
 	}
-	
-	@Override
+
+	@Override 
 	protected void locationFailed() {
 		// Nothing to do
 	}
 
-	@Override
+	@Override 
 	protected void locationSuccessful() {
 		// Nothing to do
 	};
