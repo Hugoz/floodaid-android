@@ -11,18 +11,44 @@
     style="@style/Header"
     android:text="Offer Help" />
     
-     
-    
+     <LinearLayout 
+     android:orientation = "vertical"
+     android:layout_width = "fill_parent"
+     android:layout_height ="wrap_content"
+     android:paddingLeft = "30dp" 
+     android:paddingRight = "30dp"
+     android:paddingBottom = "10dp">
+    	
     
    		<TextView
     	style = "@style/MenuItem.Red"
     	android:layout_width = "fill_parent"
     	android:layout_height = "wrap_content"
-    	android:paddingLeft = "30dp" 
-    	android:paddingRight = "30dp"
     	android:text = "I can help with...">
     	</TextView>
 
 		<include layout="@layout/categories"/>
-
+		
+	
+		<EditText
+		style = "@style/EditItem.Blue"
+		android:layout_width = "fill_parent"
+		android:layout_height = "100px"
+		android:paddingTop = "10dp"
+    	android:gravity = "center"
+    	android:textSize = "12sp"
+    	android:hint = "Comment">
+		</EditText>
+		
+		<Button
+		style = "@style/MenuItem.Blue"
+    	android:text="Upload A Photo"
+    	>
+		</Button>
+	</LinearLayout>
+	<Button
+	style = "@style/Button"
+	android:text="Next">
+	</Button>
+	
 </LinearLayout>
