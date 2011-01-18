@@ -10,8 +10,7 @@ import android.widget.Button;
 import au.com.floodaid.R;
 
 /**
- * Main activity Displays the application dashboard (menu) 
- * Called after splash screen
+ * Main activity Displays the application dashboard (menu) Called after splash screen
  * @author hsterin
  */
 public class Main extends GeoLocatedActivity implements OnClickListener {
@@ -101,13 +100,11 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 		startActivity(Intent);
 	}
 
-	@Override 
-	protected void locationFailed() {
+	@Override protected void locationFailed() {
 		// Nothing to do
 	}
 
-	@Override 
-	protected void locationSuccessful() {
+	@Override protected void locationSuccessful() {
 		// Nothing to do
 	};
 }

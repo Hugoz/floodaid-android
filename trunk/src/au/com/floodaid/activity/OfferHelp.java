@@ -3,11 +3,49 @@ package au.com.floodaid.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import au.com.floodaid.R;
 
 public class OfferHelp extends Activity {
 
 	private static final String TAG = "Register to help";
+
+	// enum for the different category buttons
+	private enum CategoryButton {
+		btnFood(R.id.btn_food, R.drawable.button_food, R.drawable.button_food_check),
+		btnConstruction(R.id.btn_construction, R.drawable.button_construction, R.drawable.button_construction_check),
+		btnGeneral(R.id.btn_general, R.drawable.button_general, R.drawable.button_general_check),
+		btnHealth(R.id.btn_health, R.drawable.button_health, R.drawable.button_health_check),
+		btnRecovery(R.id.btn_recovery, R.drawable.button_recovery, R.drawable.button_recovery_check),
+		btnSanitation(R.id.btn_sanitation, R.drawable.button_sanitation, R.drawable.button_sanitation_check),
+		btnTransport(R.id.btn_transportation, R.drawable.button_transport, R.drawable.button_transport_check),
+		btnShelter(R.id.btn_shelter, R.drawable.button_shelter, R.drawable.button_shelter_check);
+
+		private CategoryButton(final int id, final int imgIdDefault, final int imgIdSelected) {
+			this.id = id;
+			this.imgIdDefault = imgIdDefault;
+			this.imgIdSelected = imgIdSelected;
+
+		}
+
+		ImageView icon; // the icon corresponding to this enum instance
+		Boolean selected; // the button can be selected or not 
+		final Integer id; // the id of the icon imageview
+		final Integer imgIdDefault; // the id of the drawable to display when the icon isn't selected
+		final Integer imgIdSelected; // the id of the drawable to display in case the icon is selected
+
+		// function to obtain enum instance corresponding to the view with this id
+		public static CategoryButton getCategoryButton(int id) {
+			for (CategoryButton cb : CategoryButton.values())
+				if (cb.id == id)
+					return cb;
+			return null;
+		}
+	}
+
+	CategoryButton[] buttons = CategoryButton.values();
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -18,6 +56,26 @@ public class OfferHelp extends Activity {
 
 		setContentView(R.layout.offer_help);
 
+		for (CategoryButton button : buttons) {
+			button.icon = (ImageView) findViewById(button.id);
+			button.selected = false;
+			button.icon.setOnClickListener(categoryButtonListener);
+		}
+
 	}
+
+	// select/deselect category icons
+	OnClickListener categoryButtonListener = new OnClickListener() {
+
+		@Override public void onClick(View v) {
+			CategoryButton categoryButton = CategoryButton.getCategoryButton(v.getId());
+			categoryButton.selected = !categoryButton.selected;
+			if (categoryButton.selected)
+				categoryButton.icon.setImageResource(categoryButton.imgIdSelected);
+			else
+				categoryButton.icon.setImageResource(categoryButton.imgIdDefault);
+
+		}
+	};
 
 }

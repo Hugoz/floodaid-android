@@ -65,4 +65,5 @@
         <item name="android:background">@drawable/red_header</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+    
 </resources>
