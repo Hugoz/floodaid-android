@@ -1,5 +1,6 @@
 package au.com.floodaid.activity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import au.com.floodaid.util.InternetUtils;
 import android.app.Activity;
@@ -8,7 +9,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import au.com.floodaid.R;
-import au.com.floodaid.util.InternetUtils;
 
 public class Terms extends Activity {
 	// Logger constant
@@ -42,8 +42,14 @@ public class Terms extends Activity {
 		Thread t = new Thread() 
 		{            
 			public void run() 
-			{                
-				terms = InternetUtils.getTOC("http://dev.floodaid.com.au/api/toc?api_key=abcdefg12345");                
+			{       
+				JSONObject jsonTmp = InternetUtils.executeApiCall("http://dev.floodaid.com.au/api/tou?api_key=abcdefg12345");
+				try {
+					terms = jsonTmp.getString("tou");
+					terms = terms.replace("&nbsp;", "\n")+"\n";
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}                
 				handler.post(setTerms);            
 			}        
 		};        
