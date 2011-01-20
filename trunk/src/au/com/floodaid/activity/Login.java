@@ -75,6 +75,7 @@ public class Login extends Activity {
 					 	
 					 // TODO: condition if login successfull
 //					 if (loginSuccessful) {
+					 	// TODO: Store login in shared preferences
 					 
 						// Go to next activity
 					 if (!needHelp) {

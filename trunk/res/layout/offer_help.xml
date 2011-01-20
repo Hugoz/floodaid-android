@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/register_to_help_form"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
     android:background="#FFFFFF">
-    
+
 	<TextView
 	android:id="@+id/header_title"
     style="@style/Header"
     android:text="Offer Help" />
-    
+	
      <LinearLayout 
      android:orientation = "vertical"
      android:layout_width = "fill_parent"
-     android:layout_height ="wrap_content"
+     android:layout_height ="fill_parent"
+     android:layout_below="@id/header_title"
      android:paddingLeft = "30dp" 
      android:paddingRight = "30dp"
-     android:paddingBottom = "10dp">
+     android:paddingBottom = "10dp"
+     android:background="#FFFFFF">
     	
     
    		<TextView
@@ -28,27 +29,25 @@
     	</TextView>
 
 		<include layout="@layout/categories"/>
-		
 	
 		<EditText
-		style = "@style/EditItem.Blue"
+		android:id="@+id/comments"
+		style = "@style/EditItem.Blue.NoBg"
 		android:layout_width = "fill_parent"
-		android:layout_height = "100px"
+		android:layout_height = "150dp"
 		android:paddingTop = "10dp"
     	android:gravity = "center"
     	android:textSize = "12sp"
     	android:hint = "Comment">
 		</EditText>
 		
-		<Button
-		style = "@style/MenuItem.Blue"
-    	android:text="Upload A Photo"
-    	>
-		</Button>
 	</LinearLayout>
-	<Button
-	style = "@style/Button"
-	android:text="Next">
-	</Button>
 	
-</LinearLayout>
+	<Button
+	android:id = "@+id/next"
+	android:text = "Next"
+	style="@style/Button"
+	android:layout_alignParentBottom="true"
+	/>
+	
+</RelativeLayout>

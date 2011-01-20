@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import au.com.floodaid.R;
 
 public class OfferHelp extends Activity {
@@ -46,22 +49,26 @@ public class OfferHelp extends Activity {
 	}
 
 	CategoryButton[] buttons = CategoryButton.values();
-
+	Button nextButton;
+	EditText comments;
+	
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		//TODO: check if the user is logged in or not, forward to Registration Form
 
 		Log.d(TAG, "Creating personal information form");
 
 		setContentView(R.layout.offer_help);
+
+		comments = (EditText) findViewById(R.id.comments);
 
 		for (CategoryButton button : buttons) {
 			button.icon = (ImageView) findViewById(button.id);
 			button.selected = false;
 			button.icon.setOnClickListener(categoryButtonListener);
 		}
-
+		
+		// Next button
+		nextButton.setOnClickListener(submitFormListener);
 	}
 
 	// select/deselect category icons
@@ -76,6 +83,43 @@ public class OfferHelp extends Activity {
 				categoryButton.icon.setImageResource(categoryButton.imgIdDefault);
 
 		}
+	};
+	
+	/**
+	 * A call-back for when the user submits the form
+	 */
+	private OnClickListener submitFormListener = new OnClickListener() {
+
+		@Override public void onClick(View v) {
+
+			// Init error messages
+			StringBuilder errors = new StringBuilder();
+			
+			
+			// TODO: Check that there is at least 1 category selected
+			
+			if (comments.getText() == null || "".equals(comments.getText().toString())) {
+				errors.append("Please enter a description of the help you can offer\n");
+			}
+			
+			if (errors.length() == 0) {
+				Log.d(TAG, "Validation successful");
+				
+				//TODO: API Call to submit new help offer
+				
+				// TODO: If success, go to Confirmation/Thank you page
+
+			
+			}
+
+			else {
+				Log.d(TAG, "Validation error");
+				Toast toast = Toast.makeText(getBaseContext(), errors.toString(), Toast.LENGTH_LONG);
+				toast.show();
+			}
+
+		}
+
 	};
 
 }
