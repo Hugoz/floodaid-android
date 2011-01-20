@@ -29,7 +29,7 @@ android:id="@+id/btn_general"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_general"
-android:layout_x="240dp"
+android:layout_x="187dp"
 android:layout_y="86dp"
 >
 </ImageView>
@@ -38,7 +38,7 @@ android:id="@+id/btn_transportation"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_transport"
-android:layout_x="168dp"
+android:layout_x="128dp"
 android:layout_y="15dp"
 >
 </ImageView>
@@ -47,7 +47,7 @@ android:id="@+id/btn_sanitation"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_sanitation"
-android:layout_x="172dp"
+android:layout_x="131dp"
 android:layout_y="88dp"
 >
 </ImageView>
@@ -56,7 +56,7 @@ android:id="@+id/btn_health"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_health"
-android:layout_x="97dp"
+android:layout_x="77dp"
 android:layout_y="83dp"
 
 >
@@ -66,7 +66,7 @@ android:id="@+id/btn_recovery"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_recovery"
-android:layout_x="252dp"
+android:layout_x="202dp"
 android:layout_y="21dp"
 >
 </ImageView>
@@ -75,7 +75,7 @@ android:id="@+id/btn_shelter"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_shelter"
-android:layout_x="96dp"
+android:layout_x="77dp"
 android:layout_y="19dp"
 >
 </ImageView>
