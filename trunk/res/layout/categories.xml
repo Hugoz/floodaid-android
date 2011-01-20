@@ -11,8 +11,8 @@ android:id="@+id/btn_construction"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_construction"
-android:layout_x="10px"
-android:layout_y="83px"
+android:layout_x="10dp"
+android:layout_y="83dp"
 >
 </ImageView>
 <ImageView
@@ -20,8 +20,8 @@ android:id="@+id/btn_food"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_food"
-android:layout_x="9px"
-android:layout_y="21px"
+android:layout_x="9dp"
+android:layout_y="21dp"
 >
 </ImageView>
 <ImageView
@@ -29,8 +29,8 @@ android:id="@+id/btn_general"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_general"
-android:layout_x="187px"
-android:layout_y="86px"
+android:layout_x="240dp"
+android:layout_y="86dp"
 >
 </ImageView>
 <ImageView
@@ -38,8 +38,8 @@ android:id="@+id/btn_transportation"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_transport"
-android:layout_x="128px"
-android:layout_y="15px"
+android:layout_x="168dp"
+android:layout_y="15dp"
 >
 </ImageView>
 <ImageView
@@ -47,8 +47,8 @@ android:id="@+id/btn_sanitation"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_sanitation"
-android:layout_x="131px"
-android:layout_y="88px"
+android:layout_x="172dp"
+android:layout_y="88dp"
 >
 </ImageView>
 <ImageView
@@ -56,8 +56,8 @@ android:id="@+id/btn_health"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_health"
-android:layout_x="77px"
-android:layout_y="84px"
+android:layout_x="97dp"
+android:layout_y="83dp"
 
 >
 </ImageView>
@@ -66,8 +66,8 @@ android:id="@+id/btn_recovery"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_recovery"
-android:layout_x="202px"
-android:layout_y="21px"
+android:layout_x="252dp"
+android:layout_y="21dp"
 >
 </ImageView>
 <ImageView
@@ -75,8 +75,8 @@ android:id="@+id/btn_shelter"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:src="@drawable/button_shelter"
-android:layout_x="77px"
-android:layout_y="19px"
+android:layout_x="96dp"
+android:layout_y="19dp"
 >
 </ImageView>
 </AbsoluteLayout>
