@@ -1,6 +1,7 @@
 package au.com.floodaid.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,9 @@ public class Login extends Activity {
 	EditText emailEdit, passwordEdit;
 	Button submit;
 	
+	// Where to go next?
+	boolean needHelp = false;
+	
 	/** 
      * Method called when activity is created
      */
@@ -37,6 +41,10 @@ public class Login extends Activity {
         submit = (Button) findViewById(R.id.form_submit);
 		submit.setOnClickListener(submitFormListener);
 		
+		// check what the next activity is
+		Bundle extras = getIntent().getExtras();
+		needHelp = extras.getBoolean("au.com.floodaid.needHelp");
+
 	}
 	
 	
@@ -64,7 +72,23 @@ public class Login extends Activity {
 				 try {
 			        	//TODO: API call
 						//Api.login(emailEdit.getText(), passwordEdit.getText());
-						
+					 	
+					 // TODO: condition if login successfull
+//					 if (loginSuccessful) {
+					 
+						// Go to next activity
+					 if (!needHelp) {
+							nextActivity(OfferHelp.class);
+						} else {
+							nextActivity(RequestHelp.class);
+						}
+						 
+//					 } else {
+//						 Log.d(TAG, "Cannot login");
+//						 Toast toast = Toast.makeText(getBaseContext(), "Your email or password is incorrect, please try again", Toast.LENGTH_LONG);
+//						 toast.show();
+//					 }
+//					 	
 					} catch (Exception e) {
 						Toast.makeText(getBaseContext(), "Your login details are incorrect, please try again", Toast.LENGTH_SHORT);
 					}
@@ -79,4 +103,13 @@ public class Login extends Activity {
 		}
 
 	};
+	
+	/**
+	 * Start next activity without intent parameter
+	 * @param activity
+	 */
+	private void nextActivity(Class<?> activity) {
+		Intent Intent = new Intent(getBaseContext(), activity);
+		startActivity(Intent);
+	}
 }

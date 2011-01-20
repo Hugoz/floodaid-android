@@ -69,7 +69,7 @@ public class RegistrationForm extends Activity {
 		loginLink.setOnClickListener(new OnClickListener() {
 
 			@Override public void onClick(View v) {
-				nextActivity(Login.class);
+				nextActivity(Login.class, "au.com.floodaid.needHelp", needHelp);
 			}
 		});
 	}
@@ -128,5 +128,17 @@ public class RegistrationForm extends Activity {
 		Intent intent = new Intent(getBaseContext(), activity);
 		startActivity(intent);
 	}
-
+	
+	/**
+	 * Start next activity with a single boolean extra
+	 * 
+	 * @param activity
+	 * @param parmName
+	 * @param parmValue
+	 */
+	private void nextActivity(Class<?> activity, String parmName, boolean parmValue) {
+		Intent intent = new Intent(getBaseContext(), activity);
+		intent.putExtra(parmName, parmValue);
+		startActivity(intent);
+	}
 }
