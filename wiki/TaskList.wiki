@@ -13,13 +13,13 @@ done
   * Registration
 
 in progress
-
+  * Offer help
+  * Map of help requests
 
 todo
   * List people who need help
-  * Offer help
   * Request help
-
+  * Thank you page after submission
 
 
 = Backend =
@@ -28,7 +28,7 @@ done
   * Geolocate user
 
 todo
-  * Communication with Drupal API. May use DrupalCloud lib from https://github.com/skyred/DrupalCloud
+  * Communication with Drupal API. 
   * Build data objects
   * Retrieve data from server (by location, by criterias)
   * Send data to server (New user, new Request, new Offer, upload picture)
