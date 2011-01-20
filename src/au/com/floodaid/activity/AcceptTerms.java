@@ -35,7 +35,7 @@ public class AcceptTerms extends Activity {
 		phone = intent.getCharSequenceExtra("au.com.floodaid.phone");
 		postcode = intent.getCharSequenceExtra("au.com.floodaid.postcode");
 		street = intent.getCharSequenceExtra("au.com.floodaid.street");
-		needHelp = intent.getBooleanExtra("needHelp", false);
+		needHelp = intent.getBooleanExtra("au.com.floodaid.needHelp", false);
 
 	}
 

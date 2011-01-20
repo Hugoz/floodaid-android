@@ -33,7 +33,7 @@ public class RegistrationForm extends Activity {
 
 		// check if the user is logged in 
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		loggedIn = settings.getBoolean("loggedIn", false);
+		loggedIn = settings.getBoolean("au.com.floodaid.loggedIn", false);
 
 		// check if the user needs help or provides help
 		Bundle extras = getIntent().getExtras();
@@ -105,11 +105,12 @@ public class RegistrationForm extends Activity {
 				Log.d(TAG, "Validation successful");
 
 				Intent intent = new Intent(getBaseContext(), AcceptTerms.class);
-				intent.putExtra("email", emailEdit.getText());
-				intent.putExtra("password", passwordEdit.getText());
-				intent.putExtra("phone", phoneEdit.getText());
-				intent.putExtra("postcode", postcodeEdit.getText());
-				intent.putExtra("street", streetEdit.getText());
+				intent.putExtra("au.com.floodaid.email", emailEdit.getText());
+				intent.putExtra("au.com.floodaid.password", passwordEdit.getText());
+				intent.putExtra("au.com.floodaid.phone", phoneEdit.getText());
+				intent.putExtra("au.com.floodaid.postcode", postcodeEdit.getText());
+				intent.putExtra("au.com.floodaid.street", streetEdit.getText());
+				intent.putExtra("au.com.floodaid.needHelp", needHelp);
 				startActivity(intent);
 			}
 
