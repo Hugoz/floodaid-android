@@ -14,7 +14,7 @@ public class Terms extends Activity {
 	// Logger constant
 	private static final String TAG = "Terms";
 	TextView txt;
-	String terms;
+	
 	   
 	/** 
      * Method called when activity is created
@@ -37,15 +37,16 @@ public class Terms extends Activity {
         
 	}
 	
+	String terms;
 	protected void loadTermsViaAPI() 
-	{                
+	{             
 		Thread t = new Thread() 
-		{            
+		{           
 			public void run() 
-			{       
+			{
 				JSONObject jsonTmp = InternetUtils.executeApiCall("http://dev.floodaid.com.au/api/tou?api_key=abcdefg12345");
 				try {
-					terms = jsonTmp.getString("tou");
+					terms = jsonTmp.getString("text");
 					terms = terms.replace("&nbsp;", "\n")+"\n";
 				} catch (JSONException e) {
 					e.printStackTrace();

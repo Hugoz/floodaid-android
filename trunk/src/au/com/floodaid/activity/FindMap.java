@@ -1,16 +1,25 @@
 package au.com.floodaid.activity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import au.com.floodaid.util.ApiUtils;
+import au.com.floodaid.util.InternetUtils;
 import au.com.floodaid.R;
 import au.com.floodaid.maps.MapItemsOverlay;
 import au.com.floodaid.maps.PlaceOverlayItem;
@@ -34,6 +43,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	private MapController mapController;
 	
 	// Map overlay that contains the markers
+	private List<Place> placesList = new ArrayList<Place>();
 	private MapItemsOverlay overlay;
 	
 	Button btnContacts, btnRegisterToHelp, btnRegisterForHelp;
@@ -66,52 +76,29 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    mapController = mapView.getController();
 	    mapController.setZoom(13); //Fixed Zoom Level
 	    
+	    Drawable defaultMarker = this.getResources().getDrawable(R.drawable.map_marker);
+	    defaultMarker.setBounds(0, 0, defaultMarker.getIntrinsicWidth(), defaultMarker.getIntrinsicHeight());
+	    overlay = new MapItemsOverlay(defaultMarker, this);
+	    
+	    
+	    refreshPlaces();
+	    
+	    
 	    // Get Location passed by the Main activity
 	    Location currentLocation = getIntent().getParcelableExtra("au.com.floodaid.CurrentLocation"); 
 		
-	    if (currentLocation == null) {
+	    //if (currentLocation == null) 
+	    {
 	    	// Use default location Brisbane if cannot find network location
 	    	currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD, Australia");
 	    }
 	    
 	    // center map
+	    
+	    setPointer(currentLocation);
 	    centerLocation(currentLocation);
 	    
-	    // TODO: Load data form Drupal
-		// TODO: Check api call
-	    List<Place> placesList = Collections.emptyList();
 	    
-	    // get the JSON response from Drupal. Freezes GUI this way.
-//	    JSONObject helpListing = InternetUtils.executeApiCall("http://floodaid.com.au/api/help/list?api_key=abcdefg12345&user_token="+"");
-	    // TODO: Parse JSONObject
-	    // see http://androidosbeginning.blogspot.com/2010/11/json-parsing-example.html
-//	    try {
-//			String helpType = helpListing.getString("type");
-//		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-//		}
-
-	    
-	    // Create overlay items
-	    List<Overlay> mapOverlays = mapView.getOverlays();
-	    Drawable defaultMarker = this.getResources().getDrawable(R.drawable.map_marker);
-	    defaultMarker.setBounds(0, 0, defaultMarker.getIntrinsicWidth(), defaultMarker.getIntrinsicHeight());
-	    overlay = new MapItemsOverlay(defaultMarker, this);
-
-	    // Draw Current location on the map
-	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(currentLocation);
-	    OverlayItem currentLoc = new OverlayItem(point, "Current location", "This is your current location");
-	    Drawable currentLocMarker = this.getResources().getDrawable(R.drawable.map_marker);
-	    currentLocMarker.setBounds(0, 0, currentLocMarker.getIntrinsicWidth(), currentLocMarker.getIntrinsicHeight());
-    	currentLoc.setMarker(currentLocMarker);
-	    overlay.addOverlay(currentLoc);
-
-	    // Add markers for all points
-	    drawPlaces(placesList);
-	    
-	    // Add overlay to the map
-	    mapOverlays.add(overlay);
 	}
     
     
@@ -153,6 +140,59 @@ public class FindMap extends MapActivity implements OnClickListener {
     	}
     }
     
+    private void setPointer(Location location)
+    {
+    	// Draw Current location on the map
+    	try
+    	{
+		    GeoPoint point = LocationUtils.convertLocationToGeoPoint(location);
+		    OverlayItem currentLoc = new OverlayItem(point, "Current location", "This is your current location");
+		    Drawable currentLocMarker = this.getResources().getDrawable(R.drawable.blue_marker);
+		    currentLocMarker.setBounds(0, 0, currentLocMarker.getIntrinsicWidth(), currentLocMarker.getIntrinsicHeight());
+	    	currentLoc.setMarker(currentLocMarker);
+	    	overlay.addOverlay(currentLoc);
+	    	mapView.getOverlays().add(overlay);
+	    	mapView.invalidate();
+    	}
+    	catch (Exception e) {}
+    }
+   
+    private List<Place> getPlaces(String url)
+    {
+    	JSONObject respons = ApiUtils.executeApiCall(url);
+    	List<Place> places = new ArrayList<Place>();
+    	JSONArray list = new JSONArray();
+    	
+		try {
+			list = respons.getJSONArray("results");
+		}
+		catch (Exception e)
+		{
+		}
+		
+		for (int i=0;i<list.length();i++)
+		{
+			try {
+
+				JSONObject t = list.getJSONObject(i);
+				//String nid = 
+				if (t.getDouble("latitude") > 0 || t.getDouble("longitude") > 0)
+				{
+					Place p = new Place(t.getString("nid"), t.getString("title"),
+							"", t.getString("postal_code"), 
+							t.getDouble("latitude"), t.getDouble("longitude"), "", "", t.getString("description"),
+							0, 0);
+					places.add(p);
+				}
+				//System.out.println(p.getName());
+			
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return places;
+    }
 
 	@Override 
 	public void onClick(View view) {
@@ -190,5 +230,39 @@ public class FindMap extends MapActivity implements OnClickListener {
 		Intent Intent = new Intent(getBaseContext(), activity);
 		startActivity(Intent);
 	}
+	
+	///////////////
+	
+	protected void refreshPlaces() 
+	{             
+		Thread t = new Thread() 
+		{           
+			public void run() 
+			{
+				// show 5 pages with markers.
+				for (int i=0;i<14;i++)
+				{
+					List<Place> tmp = getPlaces("http://dev.floodaid.com.au/api/help/list?api_key=abcdefg12345&page="+i); 
+					placesList.addAll(tmp);
+					//placesList = tmp;
+				    
+				}
+				List<Overlay> mapOverlays = mapView.getOverlays();
+			    drawPlaces(placesList);
+			    mapOverlays.add(overlay);
+			  handler.post(refreshMap);
+			}        
+		};        
+		t.start();    
+	} 
+	
+	final Handler handler = new Handler();        
+	final Runnable refreshMap = new Runnable() 
+	{        
+		public void run() 
+		{            
+			mapView.invalidate();
+		}    
+	};
     
 }
