@@ -27,13 +27,15 @@ todo
 done
   * Geolocate user
 
-todo
+in progress
   * Communication with Drupal API. 
-  * Build data objects
+
+todo
+  * Store user token 
   * Retrieve data from server (by location, by criterias)
   * Send data to server (New user, new Request, new Offer, upload picture)
   * Take picture with phone camera
-  * Menu options
+  * Menu options (Logout)
 
 
 = QA =
