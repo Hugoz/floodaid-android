@@ -2,6 +2,8 @@ package au.com.floodaid.activity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import au.com.floodaid.util.ApiUtils;
 import au.com.floodaid.util.InternetUtils;
 import android.app.Activity;
 import android.os.Bundle;
@@ -44,13 +46,8 @@ public class Terms extends Activity {
 		{           
 			public void run() 
 			{
-				JSONObject jsonTmp = InternetUtils.executeApiCall("http://dev.floodaid.com.au/api/tou?api_key=abcdefg12345");
-				try {
-					terms = jsonTmp.getString("text");
-					terms = terms.replace("&nbsp;", "\n")+"\n";
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}                
+				terms = ApiUtils.getTOU();
+			
 				handler.post(setTerms);            
 			}        
 		};        

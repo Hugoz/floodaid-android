@@ -50,21 +50,21 @@ public class InternetUtils {
 	 * @param url
 	 * @return JSONObject
 	 */
-	public static JSONObject executeApiCall(String url) {
-		try {
-			Log.d(TAG, "Execute API call: " + url);
-			URL urlObj = new URL(url);
-			InputStream is = (InputStream) urlObj.getContent();
-			String result = convertStreamToString(is);
-			JSONObject json=new JSONObject(result);
-			Log.d(TAG, "Executed API call " + urlObj.getFile()); 
-			return json;
-			
-		} catch (Exception e) {
-			Log.e(TAG, "Unable to execute API call " + url, e);
-			return null;
-		}
-	}
+//	public static JSONObject executeApiCall(String url) {
+//		try {
+//			Log.d(TAG, "Execute API call: " + url);
+//			URL urlObj = new URL(url);
+//			InputStream is = (InputStream) urlObj.getContent();
+//			String result = convertStreamToString(is);
+//			JSONObject json=new JSONObject(result);
+//			Log.d(TAG, "Executed API call " + urlObj.getFile()); 
+//			return json;
+//			
+//		} catch (Exception e) {
+//			Log.e(TAG, "Unable to execute API call " + url, e);
+//			return null;
+//		}
+//	}
 	
 	/**
 	 * Get Terms of use via API
@@ -73,45 +73,45 @@ public class InternetUtils {
 	 * @param url
 	 * @return String
 	 */
-	public static String getTOC(String url) {
-		try {
-			URL urlObj = new URL(url);
-			InputStream is = (InputStream) urlObj.getContent();
-			String result = convertStreamToString(is);
-			// TODO: result needs unescaping
-			return result;
-			
-		} catch (Exception e) {
-			Log.e(TAG, "Unable to execute API call " + url, e);
-			return null;
-		}
-	}
+//	public static String getTOC(String url) {
+//		try {
+//			URL urlObj = new URL(url);
+//			InputStream is = (InputStream) urlObj.getContent();
+//			String result = convertStreamToString(is);
+//			// TODO: result needs unescaping
+//			return result;
+//			
+//		} catch (Exception e) {
+//			Log.e(TAG, "Unable to execute API call " + url, e);
+//			return null;
+//		}
+//	}
 	
 	/**
     *
     * @param is
     * @return String
     */
-   public static String convertStreamToString(InputStream is) {
-       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-       StringBuilder sb = new StringBuilder();
-
-       String line = null;
-       try {
-           while ((line = reader.readLine()) != null) {
-               sb.append(line + "\n");
-           }
-       } catch (IOException e) {
-           e.printStackTrace();
-       } finally {
-           try {
-               is.close();
-           } catch (IOException e) {
-               e.printStackTrace();
-           }
-       }
-       return sb.toString();
-   }
+//   public static String convertStreamToString(InputStream is) {
+//       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//       StringBuilder sb = new StringBuilder();
+//
+//       String line = null;
+//       try {
+//           while ((line = reader.readLine()) != null) {
+//               sb.append(line + "\n");
+//           }
+//       } catch (IOException e) {
+//           e.printStackTrace();
+//       } finally {
+//           try {
+//               is.close();
+//           } catch (IOException e) {
+//               e.printStackTrace();
+//           }
+//       }
+//       return sb.toString();
+//   }
 
 
 }

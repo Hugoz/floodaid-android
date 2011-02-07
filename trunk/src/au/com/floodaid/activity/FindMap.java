@@ -12,12 +12,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 import au.com.floodaid.util.ApiUtils;
 import au.com.floodaid.util.InternetUtils;
 import au.com.floodaid.R;
@@ -43,6 +46,8 @@ public class FindMap extends MapActivity implements OnClickListener {
 	private MapController mapController;
 	
 	// Map overlay that contains the markers
+	//private ArrayList<Place> pL = new ArrayList<Place>();
+	//private List<Place> placesList = Collections.synchronizedList(pL);
 	private List<Place> placesList = new ArrayList<Place>();
 	private MapItemsOverlay overlay;
 	
@@ -76,10 +81,12 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    mapController = mapView.getController();
 	    mapController.setZoom(13); //Fixed Zoom Level
 	    
+	    List<Overlay> listOfOverlays = mapView.getOverlays();
+	    listOfOverlays.clear();
+	    
 	    Drawable defaultMarker = this.getResources().getDrawable(R.drawable.map_marker);
 	    defaultMarker.setBounds(0, 0, defaultMarker.getIntrinsicWidth(), defaultMarker.getIntrinsicHeight());
 	    overlay = new MapItemsOverlay(defaultMarker, this);
-	    
 	    
 	    refreshPlaces();
 	    
@@ -95,30 +102,14 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    
 	    // center map
 	    
-	    setPointer(currentLocation);
+	    //setPointer(currentLocation);
 	    centerLocation(currentLocation);
 	    
 	    
 	}
     
     
-    /**
-     * Put markers on the map for all the places from the list
-     * 
-     * @param placesList
-     */
-    private void drawPlaces(List<Place> placesList) {
-    	Drawable placeMarker = this.getResources().getDrawable(R.drawable.map_marker);
-    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
-    	
-    	// Create one OverlayItem per Place
-    	for (Place p : placesList) {
-    	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(p.getLocation());
-    	    PlaceOverlayItem placeItem = new PlaceOverlayItem(point, p);
-    	    placeItem.setMarker(placeMarker);
-    	    overlay.addOverlay(placeItem);
-    	}
-    }
+    
     
     /**
      * Required by superclass
@@ -157,54 +148,19 @@ public class FindMap extends MapActivity implements OnClickListener {
     	catch (Exception e) {}
     }
    
-    private List<Place> getPlaces(String url)
-    {
-    	JSONObject respons = ApiUtils.executeApiCall(url);
-    	List<Place> places = new ArrayList<Place>();
-    	JSONArray list = new JSONArray();
-    	
-		try {
-			list = respons.getJSONArray("results");
-		}
-		catch (Exception e)
-		{
-		}
-		
-		for (int i=0;i<list.length();i++)
-		{
-			try {
-
-				JSONObject t = list.getJSONObject(i);
-				//String nid = 
-				if (t.getDouble("latitude") > 0 || t.getDouble("longitude") > 0)
-				{
-					Place p = new Place(t.getString("nid"), t.getString("title"),
-							"", t.getString("postal_code"), 
-							t.getDouble("latitude"), t.getDouble("longitude"), "", "", t.getString("description"),
-							0, 0);
-					places.add(p);
-				}
-				//System.out.println(p.getName());
-			
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return places;
-    }
-
-	@Override 
+    	@Override 
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_emergency:
 				nextActivity(Contacts.class);
 				break;
 			case R.id.btn_offer_help:
-				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", false);
+				if (ApiUtils.isLoggedIn()) nextActivity(OfferHelp.class);
+				else nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", false);
 				break;
 			case R.id.btn_request_help:
-				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", true);
+				if (ApiUtils.isLoggedIn()) nextActivity(RequestHelp.class); 
+				else nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", true);
 				break;
 		}
 	}
@@ -240,17 +196,15 @@ public class FindMap extends MapActivity implements OnClickListener {
 			public void run() 
 			{
 				// show 5 pages with markers.
-				for (int i=0;i<14;i++)
+				for (int i=0;i<5;i++)
 				{
-					List<Place> tmp = getPlaces("http://dev.floodaid.com.au/api/help/list?api_key=abcdefg12345&page="+i); 
+					List<Place> tmp = ApiUtils.getHelpList(true, i);
+					if (tmp.size() < 10) i=14;
 					placesList.addAll(tmp);
-					//placesList = tmp;
-				    
+
+					handler.post(refreshMap);
 				}
-				List<Overlay> mapOverlays = mapView.getOverlays();
-			    drawPlaces(placesList);
-			    mapOverlays.add(overlay);
-			  handler.post(refreshMap);
+				
 			}        
 		};        
 		t.start();    
@@ -261,8 +215,56 @@ public class FindMap extends MapActivity implements OnClickListener {
 	{        
 		public void run() 
 		{            
+			List<Overlay> mapOverlays = mapView.getOverlays();
+			Drawable placeMarker = getResources().getDrawable(R.drawable.map_marker);
+	    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
+	    	
+	    	// Create one OverlayItem per Place
+	    	// TODO: take care java.util.ConcurrentModificationException
+	    	try
+	    	{
+		    	for (Place p : placesList) {
+		    	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(p.getLocation());
+		    	    PlaceOverlayItem placeItem = new PlaceOverlayItem(point, p);
+		    	    placeItem.setMarker(placeMarker);
+		    	    overlay.addOverlay(placeItem);
+		    	}
+		    	mapOverlays.clear();
+			    mapOverlays.add(overlay);
+	    	}
+	    	catch (Exception e)
+	    	{
+	    		Log.e(TAG, "269: "+e.getMessage());
+	    	}
 			mapView.invalidate();
 		}    
 	};
+	
+	class OverlayTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		public void onPreExecute() {
+			if (overlay!=null) {
+				mapView.getOverlays().remove(overlay);
+				mapView.invalidate();	
+				overlay=null;
+			}
+		}
+		
+		@Override
+		public Void doInBackground(Void... unused) {
+			SystemClock.sleep(5000);						// simulated work
+			
+			//overlay=new SitesOverlay();
+			
+			return(null);
+		}
+		
+		@Override
+		public void onPostExecute(Void unused) {
+			mapView.getOverlays().add(overlay);
+			mapView.invalidate();			
+		}
+	}
+
     
 }
