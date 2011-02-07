@@ -62,6 +62,13 @@ public class RegistrationForm extends Activity {
 		streetEdit = (EditText) findViewById(R.id.form_street);
 		postcodeEdit = (EditText) findViewById(R.id.form_postcode);
 
+		// ronald
+		emailEdit.setText("ronald@ronsoft.nl");
+		passwordEdit.setText("123456");
+		phoneEdit.setText("+31625062695");
+		streetEdit.setText("Huygensstr 17");
+		postcodeEdit.setText("9402");
+		
 		submit = (Button) findViewById(R.id.form_submit);
 		submit.setOnClickListener(submitFormListener);
 
