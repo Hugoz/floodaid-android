@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import au.com.floodaid.R;
 import au.com.floodaid.provider.Place;
 import au.com.floodaid.util.ApiUtils;
 
-public class AcceptTerms extends Activity {
+public class AcceptTerms extends Activity implements OnClickListener {
 
 	CheckBox checkbox;
 	Button btnRegister;
@@ -39,7 +40,7 @@ public class AcceptTerms extends Activity {
 		checkbox = (CheckBox) findViewById(R.id.agree_checkbox);
 
 		btnRegister = (Button) findViewById(R.id.btn_register);
-		btnRegister.setOnClickListener(registerBtnListener);
+		btnRegister.setOnClickListener(this);
 
 		// get data from intent
 		Intent intent = getIntent();
@@ -55,12 +56,43 @@ public class AcceptTerms extends Activity {
 	/**
 	 * On click listener for register button
 	 */
-	private OnClickListener registerBtnListener = new OnClickListener() {
+	//private OnClickListener registerBtnListener = new OnClickListener() {
 
-		@Override public void onClick(View v) {
+		public void onClick(View v) {
 			if (checkbox.isChecked()) {
 				//TODO: register with floodaid.com.au using API
-				registerUser();
+				//registerUser();
+				ProgressDialog progressDialog;
+				progressDialog = new ProgressDialog(this);
+				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				progressDialog.setMessage("Registering...");
+				progressDialog.setCancelable(true);
+				progressDialog.show();
+				//user_key = "";
+				//user_key = ApiUtils.registerUser(email, password, phone, street, postcode);
+				
+				//pd.dismiss();
+				Thread t = new Thread(new Runnable() 
+				{           
+					public void run() 
+					{
+						try
+						{
+							user_key = ApiUtils.registerUser(email, password, phone, street, postcode);
+						}
+						catch (Exception e)
+						{}
+						//progressDialog.dismiss();
+					}        
+				});        
+				t.start();   
+				
+				try {
+				    t.join();
+				    progressDialog.dismiss();
+				} catch (InterruptedException e) {
+				    // Thread was interrupted
+				}
 				
 				if (needHelp)
 					//nextActivity(RequestHelp.class);
@@ -72,7 +104,7 @@ public class AcceptTerms extends Activity {
 				//TODO: show error
 			}
 		}
-	};
+	//};
 
 	/**
 	 * Start next activity without intent parameter
@@ -87,28 +119,15 @@ public class AcceptTerms extends Activity {
 	{     
 		//ProgressDialog pd = ProgressDialog.show(getBaseContext(), "Working..", "Register/Login user", true);
 
-		ProgressDialog progressDialog;
-		progressDialog = new ProgressDialog(this);
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		progressDialog.setMessage("Registering...");
-		progressDialog.setCancelable(true);
-		progressDialog.show();
-		user_key = "";
-		user_key = ApiUtils.registerUser(email, password, phone, street, postcode);
 		
-		//pd.dismiss();
-//		Thread t = new Thread() 
-//		{           
-//			public void run() 
-//			{
-//				try
-//				{
-//					String user_key = ApiUtils.registerUser(email, password, phone, street, postcode);
-//				}
-//				catch (Exception e)
-//				{}
-//			}        
-//		};        
-//		t.start();    
+
 	} 
+	
+	Handler progressHandler = new Handler() 
+	{         
+		public void handleMessage(Message msg) 
+		{   
+			//progressDialog.incrementProgressBy(increment);         
+		}     
+	};
 }
