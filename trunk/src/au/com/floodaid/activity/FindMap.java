@@ -79,7 +79,27 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    mapView.setBuiltInZoomControls(true);
 	    mapView.setSatellite(false); //Set satellite view
 	    mapController = mapView.getController();
-	    mapController.setZoom(13); //Fixed Zoom Level
+	    mapController.setZoom(11); //Fixed Zoom Level
+	    
+	 // Get Location passed by the Main activity
+	    Location currentLocation = getIntent().getParcelableExtra("au.com.floodaid.CurrentLocation"); 
+		
+	   // if (currentLocation == null) 
+	    {
+	    	// Use default location Brisbane if cannot find network location
+	    	// prefer using lat,lon as using an address involves network traffic 
+	    	// which slows down the loading way to much.
+	    	//currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD, Australia");
+	    	currentLocation = new Location("");
+	    	currentLocation.setLatitude(-27.377465);
+	    	currentLocation.setLongitude(152.970221);
+	    	
+	    }
+	    
+	    // center map
+	    
+	    //setPointer(currentLocation);
+	    centerLocation(currentLocation);
 	    
 	    List<Overlay> listOfOverlays = mapView.getOverlays();
 	    listOfOverlays.clear();
@@ -88,22 +108,35 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    defaultMarker.setBounds(0, 0, defaultMarker.getIntrinsicWidth(), defaultMarker.getIntrinsicHeight());
 	    overlay = new MapItemsOverlay(defaultMarker, this);
 	    
-	    refreshPlaces();
-	    
-	    
-	    // Get Location passed by the Main activity
-	    Location currentLocation = getIntent().getParcelableExtra("au.com.floodaid.CurrentLocation"); 
-		
-	    //if (currentLocation == null) 
+	    //refreshPlaces();
+	    placesList = ApiUtils.getHelpList();
+	    if (!placesList.isEmpty())
 	    {
-	    	// Use default location Brisbane if cannot find network location
-	    	currentLocation = LocationUtils.getLocationFromAddress(this, "Brisbane, QLD, Australia");
+	    	List<Overlay> mapOverlays = mapView.getOverlays();
+			Drawable placeMarker = getResources().getDrawable(R.drawable.map_marker);
+	    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
+	    	
+	    	// Create one OverlayItem per Place
+	    	// TODO: take care java.util.ConcurrentModificationException
+	    	try
+	    	{
+		    	for (Place p : placesList) {
+		    	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(p.getLocation());
+		    	    PlaceOverlayItem placeItem = new PlaceOverlayItem(point, p);
+		    	    placeItem.setMarker(placeMarker);
+		    	    overlay.addOverlay(placeItem);
+		    	}
+		    	mapOverlays.clear();
+			    mapOverlays.add(overlay);
+	    	}
+	    	catch (Exception e)
+	    	{
+	    		Log.e(TAG, "269: "+e.getMessage());
+	    	}
+			mapView.invalidate();
 	    }
 	    
-	    // center map
 	    
-	    //setPointer(currentLocation);
-	    centerLocation(currentLocation);
 	    
 	    
 	}
@@ -189,56 +222,8 @@ public class FindMap extends MapActivity implements OnClickListener {
 	
 	///////////////
 	
-	protected void refreshPlaces() 
-	{             
-		Thread t = new Thread() 
-		{           
-			public void run() 
-			{
-				// show 5 pages with markers.
-				for (int i=0;i<5;i++)
-				{
-					List<Place> tmp = ApiUtils.getHelpList(true, i);
-					if (tmp.size() < 10) i=14;
-					placesList.addAll(tmp);
-
-					handler.post(refreshMap);
-				}
-				
-			}        
-		};        
-		t.start();    
-	} 
 	
-	final Handler handler = new Handler();        
-	final Runnable refreshMap = new Runnable() 
-	{        
-		public void run() 
-		{            
-			List<Overlay> mapOverlays = mapView.getOverlays();
-			Drawable placeMarker = getResources().getDrawable(R.drawable.map_marker);
-	    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
-	    	
-	    	// Create one OverlayItem per Place
-	    	// TODO: take care java.util.ConcurrentModificationException
-	    	try
-	    	{
-		    	for (Place p : placesList) {
-		    	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(p.getLocation());
-		    	    PlaceOverlayItem placeItem = new PlaceOverlayItem(point, p);
-		    	    placeItem.setMarker(placeMarker);
-		    	    overlay.addOverlay(placeItem);
-		    	}
-		    	mapOverlays.clear();
-			    mapOverlays.add(overlay);
-	    	}
-	    	catch (Exception e)
-	    	{
-	    		Log.e(TAG, "269: "+e.getMessage());
-	    	}
-			mapView.invalidate();
-		}    
-	};
+	
 	
 	class OverlayTask extends AsyncTask<Void, Void, Void> {
 		@Override

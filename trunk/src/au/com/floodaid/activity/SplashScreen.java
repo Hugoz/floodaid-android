@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import au.com.floodaid.R;
+import au.com.floodaid.util.ApiUtils;
 
 /**
  * Generic splash screen that disappears after some time
@@ -33,6 +34,7 @@ public class SplashScreen extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ApiUtils.loadPlaces();
 		setContentView(R.layout.splashscreen);
 
 		// Add a shortcut to the next activity (Main.class) if the user clicks on the splash screen

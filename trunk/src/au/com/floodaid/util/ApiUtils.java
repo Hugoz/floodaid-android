@@ -14,7 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.Overlay;
+
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
+import au.com.floodaid.R;
+import au.com.floodaid.maps.PlaceOverlayItem;
 import au.com.floodaid.provider.Place;
 
 
@@ -38,6 +46,7 @@ public class ApiUtils {
 	private static String _tou = "";
 	private static String _contacts = "";
 	private static String _userKey = "";
+	private static List<Place> placesList = new ArrayList<Place>();
 	//private static ArrayList<String> _categories = new ArrayList<String>();
 	private static HashMap<String, String> _categories = new HashMap<String,String>();
 	
@@ -235,52 +244,59 @@ public class ApiUtils {
 
 	}
 	
+	public static List<Place> getHelpList()
+	{
+		return placesList;
+	}
+	
 	// TODO: test listing
 	public static List<Place> getHelpList(boolean getRequests, int page)
 	{
-		List<Place> places = new ArrayList<Place>();
-		String params = "&page="+page;
-		if (getRequests) params += "&type=request";
-		else params += "&type=offer";
-		
-		if (_userKey.length() < 1)
+		//if (placesList.isEmpty())
 		{
-			JSONObject jsonTmp = executeApiCall(URL+"help/list?"+APIKEY);
-			JSONArray list = new JSONArray();
+			//placesList = new ArrayList<Place>();
+			String params = "&page="+page;
+			if (getRequests) params += "&type=request";
+			else params += "&type=offer";
 			
-			try {
-				list = jsonTmp.getJSONArray("results");
-			}
-			catch (Exception e)
+			if (_userKey.length() < 1)
 			{
-			}
-			
-			for (int i=0;i<list.length();i++)
-			{
-				try {
-
-					JSONObject t = list.getJSONObject(i);
-					//String nid = 
-					//if (t.getDouble("latitude") > 0 || t.getDouble("longitude") > 0)
-					{
-						Place p = new Place(t.getString("nid"), t.getString("title"),
-								"", t.getString("postal_code"), 
-								t.optDouble("latitude",0), t.optDouble("longitude",0), "", "", t.getString("description"),
-								0, 0);
-						places.add(p);
-					}
-					//System.out.println(p.getName());
+				JSONObject jsonTmp = executeApiCall(URL+"help/list?"+APIKEY);
+				JSONArray list = new JSONArray();
 				
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				try {
+					list = jsonTmp.getJSONArray("results");
+				}
+				catch (Exception e)
+				{
+				}
+				
+				for (int i=0;i<list.length();i++)
+				{
+					try {
+	
+						JSONObject t = list.getJSONObject(i);
+						//String nid = 
+						//if (t.getDouble("latitude") > 0 || t.getDouble("longitude") > 0)
+						{
+							Place p = new Place(t.getString("nid"), t.getString("title"),
+									"", t.getString("postal_code"), 
+									t.optDouble("latitude",0), t.optDouble("longitude",0), "", "", t.getString("description"),
+									0, 0);
+							placesList.add(p);
+						}
+						//System.out.println(p.getName());
+					
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-		return places;
+		return placesList;
 		//TODO: handle error: 'invalid email and/or password' when as described.
 		//                    Throw Exception??
-
 	}
 	
 	
@@ -366,4 +382,25 @@ public class ApiUtils {
        }
        return sb.toString();
    }
+   
+   ///////
+   public static void loadPlaces() 
+	{             
+		Thread t = new Thread() 
+		{           
+			public void run() 
+			{
+				// show 5 pages with markers.
+				for (int i=0;i<5;i++)
+				{
+					List<Place> tmp = ApiUtils.getHelpList(true, i);
+					if (tmp.size() < 10) i=5;
+					//placesList.addAll(tmp);
+				}
+				Log.d("downloader", ""+placesList.size());
+				
+			}        
+		};        
+		t.start();    
+	} 
 }
