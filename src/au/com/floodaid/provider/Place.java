@@ -44,6 +44,7 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
     private long starttime;
     private long endtime;
     private int rating;
+    private boolean needHelp;
     
     // Location used to calculate distance
     private Location location;
@@ -63,7 +64,7 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
      */
 	public Place(String id, String name, String address, String postcode, double lat,
 			double lng, String phone, String website, String details,
-			long starttime, long endtime) {
+			long starttime, long endtime, boolean needHelp) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -76,6 +77,7 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
 		this.details = details;
 		this.starttime = starttime;
 		this.endtime = endtime;
+		this.needHelp = needHelp;
 		
 		// Build a location object so we can use the built-in distanceTo() to order results
 		this.location = new Location(LocationManager.NETWORK_PROVIDER);
@@ -87,7 +89,7 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
      * Cconstructor with geolocation - lat and lng are determined based on address
      */
 	public Place(Context ctx, String name, String address, String postcode, String phone, String website, String details,
-			long starttime, long endtime) {
+			long starttime, long endtime, boolean needHelp) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -98,6 +100,7 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
 		this.details = details;
 		this.starttime = starttime;
 		this.endtime = endtime;
+		this.needHelp = needHelp;
 		
 		// Geolocate address if coordinates were not passed
 		if (lat == 0 || lng == 0) {
@@ -117,13 +120,14 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
 	/**
      * Constructor for TA format
      */
-	public Place(int id, String description, String website, double lng, double lat) {
+	public Place(int id, String description, String website, double lng, double lat, boolean needHelp) {
 		super();
 		this.name = description;
 		this.details = description;
 		this.website = website;
 		this.lat = lat;
 		this.lng = lng;
+		this.needHelp = needHelp;
 		
 		// Build a location object so we can use the built-in distanceTo() to order results
 		this.location = new Location(LocationManager.NETWORK_PROVIDER);
@@ -244,7 +248,12 @@ public class Place implements BaseColumns, Comparable<Place>, Parcelable {
 	public double getLat() {
 		return lat;
 	}
-
+	
+	public boolean needHelp()
+	{
+		return needHelp;
+	}
+	
 	public void setLat(double lat) {
 		this.lat = lat;
 	}

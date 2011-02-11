@@ -49,7 +49,7 @@ public class ApiUtils {
 	private static List<Place> placesList = new ArrayList<Place>();
 	//private static ArrayList<String> _categories = new ArrayList<String>();
 	private static HashMap<String, String> _categories = new HashMap<String,String>();
-	
+	public static boolean listLoaded = true;
 	///////////////////
 	
 	/**
@@ -279,10 +279,22 @@ public class ApiUtils {
 						//String nid = 
 						//if (t.getDouble("latitude") > 0 || t.getDouble("longitude") > 0)
 						{
+							
+							boolean needHelp = false;
+							try 
+							{
+								JSONObject tp = t.getJSONObject("type");
+								Iterator<String> it = tp.keys();
+								needHelp = it.next().equals("10");
+							}
+							catch (Exception e) 
+							{
+								
+							} 
 							Place p = new Place(t.getString("nid"), t.getString("title"),
 									"", t.getString("postal_code"), 
 									t.optDouble("latitude",0), t.optDouble("longitude",0), "", "", t.getString("description"),
-									0, 0);
+									0, 0, needHelp);
 							placesList.add(p);
 						}
 						//System.out.println(p.getName());
@@ -386,10 +398,13 @@ public class ApiUtils {
    ///////
    public static void loadPlaces() 
 	{             
+		
 		Thread t = new Thread() 
-		{           
+		{       
 			public void run() 
 			{
+				this.setName("PlaceLoader");
+				listLoaded = false;
 				// show 5 pages with markers.
 				for (int i=0;i<5;i++)
 				{
@@ -398,9 +413,11 @@ public class ApiUtils {
 					//placesList.addAll(tmp);
 				}
 				Log.d("downloader", ""+placesList.size());
+				listLoaded = true;
 				
 			}        
 		};        
-		t.start();    
+		t.start();  
+
 	} 
 }
