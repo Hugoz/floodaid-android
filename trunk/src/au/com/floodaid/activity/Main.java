@@ -1,6 +1,7 @@
 package au.com.floodaid.activity;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -46,6 +47,12 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 		btnRegisterForHelp = (Button) findViewById(R.id.btn_request_help);
 		btnRegisterForHelp.setOnClickListener(this);
 	}
+	
+	protected void onDestroy()
+    {
+    	super.onDestroy(); 
+    	android.os.Process.killProcess(android.os.Process.myPid());  //kill everything and leave no threads.
+    }
 
 	@Override public void onClick(View view) {
 		switch (view.getId()) {

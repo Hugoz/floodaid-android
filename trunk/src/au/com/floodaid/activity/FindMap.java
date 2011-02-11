@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -50,6 +51,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	//private List<Place> placesList = Collections.synchronizedList(pL);
 	private List<Place> placesList = new ArrayList<Place>();
 	private MapItemsOverlay overlay;
+	ProgressDialog dialog;
 	
 	Button btnContacts, btnRegisterToHelp, btnRegisterForHelp;
 	
@@ -101,6 +103,12 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    //setPointer(currentLocation);
 	    centerLocation(currentLocation);
 	    
+	    //createOverlay();
+	    placesToOverlay();
+	}
+	
+	private void createOverlay()
+	{
 	    List<Overlay> listOfOverlays = mapView.getOverlays();
 	    listOfOverlays.clear();
 	    
@@ -116,11 +124,12 @@ public class FindMap extends MapActivity implements OnClickListener {
 			Drawable placeMarker = getResources().getDrawable(R.drawable.map_marker);
 	    	placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
 	    	
-	    	// Create one OverlayItem per Place
-	    	// TODO: take care java.util.ConcurrentModificationException
 	    	try
 	    	{
 		    	for (Place p : placesList) {
+		    		if (p.needHelp()) placeMarker = getResources().getDrawable(R.drawable.map_marker_red);
+		    		else placeMarker = getResources().getDrawable(R.drawable.map_marker_blue);
+		    		placeMarker.setBounds(0, 0, placeMarker.getIntrinsicWidth(), placeMarker.getIntrinsicHeight());
 		    	    GeoPoint point = LocationUtils.convertLocationToGeoPoint(p.getLocation());
 		    	    PlaceOverlayItem placeItem = new PlaceOverlayItem(point, p);
 		    	    placeItem.setMarker(placeMarker);
@@ -133,17 +142,58 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    	{
 	    		Log.e(TAG, "269: "+e.getMessage());
 	    	}
-			mapView.invalidate();
 	    }
-	    
-	    
-	    
-	    
 	}
     
+	// Need handler for callbacks to the UI thread    
+	final Handler mHandler = new Handler();    
+	
+	// Create runnable for posting    
+	final Runnable mUpdateResults = new Runnable() 
+	{        
+		public void run() 
+		{            
+			updateResultsInUi();        
+		}    
+		
+	};
+	
+	public void placesToOverlay() 
+	{           
+		//dialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
+		Thread t = new Thread() 
+		{       
+			public void run() 
+			{
+				int sleepTime = 500;
+				this.setName("OverlayCreator");
+				//ApiUtils.loadPlaces();
+					try 
+					{
+						while (!ApiUtils.listLoaded) 
+						{
+							sleep(sleepTime);
+						}
+					} 
+					catch (InterruptedException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				createOverlay();
+				mHandler.post(mUpdateResults);
+			}        
+		};        
+		t.start();    
+	} 
     
-    
-    
+	private void updateResultsInUi() 
+	{        
+		// Back in the UI thread -- update our UI elements
+		mapView.invalidate();
+		//dialog.dismiss();
+	}
+	
     /**
      * Required by superclass
      */
