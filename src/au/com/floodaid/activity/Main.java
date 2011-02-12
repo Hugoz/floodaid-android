@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 import au.com.floodaid.R;
+import au.com.floodaid.util.ApiUtils;
 
 /**
  * Main activity Displays the application dashboard (menu) Called after splash screen
@@ -66,10 +68,13 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 				nextActivity(About.class);
 				break;
 			case R.id.btn_offer_help:
-				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", false);
+				if (ApiUtils.isLoggedIn()) nextActivity(OfferHelp.class); 
+				else nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", false);
 				break;
 			case R.id.btn_request_help:
-				nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", true);
+				Toast.makeText(this, "not implemented yet", Toast.LENGTH_LONG).show();
+				//if (ApiUtils.isLoggedIn()) nextActivity(RequestHelp.class);
+				//else nextActivity(RegistrationForm.class, "au.com.floodaid.needHelp", true);
 				break;
 		}
 	}

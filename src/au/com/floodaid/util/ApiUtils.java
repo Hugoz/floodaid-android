@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,8 +18,10 @@ import org.json.JSONObject;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.Overlay;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import au.com.floodaid.R;
@@ -46,10 +49,11 @@ public class ApiUtils {
 	private static String _tou = "";
 	private static String _contacts = "";
 	private static String _userKey = "";
+	private static String _lastError = "";
 	private static List<Place> placesList = new ArrayList<Place>();
-	//private static ArrayList<String> _categories = new ArrayList<String>();
 	private static HashMap<String, String> _categories = new HashMap<String,String>();
 	public static boolean listLoaded = true;
+	public static SharedPreferences prefs;
 	///////////////////
 	
 	/**
@@ -59,8 +63,8 @@ public class ApiUtils {
 	 * 
 	 * @return A String with the Terms of Use. 
 	 */
-	public static String getTOU() {
-		
+	public static String getTOU() 
+	{
 		if (_tou.length() < 1)
 		{
 			JSONObject jsonTmp = executeApiCall(URL+"tou?"+APIKEY);
@@ -126,26 +130,22 @@ public class ApiUtils {
 	 * @return A Hashmap with the available categories as number/name pair. 
 	 */
 	@SuppressWarnings("unchecked")
-	public static HashMap<String, String> getCategories() {
-		
+	public static HashMap<String, String> getCategories() 
+	{
 		if (_categories.size() < 1)
 		{
 			JSONObject jsonTmp = executeApiCall(URL+"help/categories_list?"+APIKEY);
-			//JSONArray list = new JSONArray();
 			try {
-				//_categories.add(jsonTmp.getString("1"));
 				Iterator<String> i = jsonTmp.keys();
 				if (i.hasNext()) _categories.clear();
-				while(i.hasNext()){
+				while(i.hasNext())
+				{					
 					String ent = i.next();
-			      //_categories.add();
-			      _categories.put(ent, jsonTmp.getString(ent));
+					_categories.put(ent, jsonTmp.getString(ent));
 			    }
-
-//				list = jsonTmp.getJSONArray("results");
-//				_tou = jsonTmp.getString("text");
-//				_tou = _tou.replace("&nbsp;", "\n")+"\n";
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			} 
 		}
@@ -165,34 +165,38 @@ public class ApiUtils {
 	 * @return The user's key, required for authentication and submitting help items.
 	 * When an empty String is returned this indicated an error 
 	 */
-	// TODO: test registration
 	public static String registerUser(String email, String pass, String phone, String street, String postal)
 	{
 		if (_userKey.length() < 1)
 		{
-			JSONObject jsonTmp = executeApiCall(URL+"user/register?"+APIKEY);
-			try {
-				if (jsonTmp.has("user_key")) _userKey = jsonTmp.getString("user_key");
+			try
+			{
+				String paramString = "";
+				paramString += "&email="+URLEncoder.encode(email,"UTF-8");
+				paramString += "&pass="+URLEncoder.encode(pass,"UTF-8");
+				paramString += "&phone="+URLEncoder.encode(phone,"UTF-8");
+				paramString += "&street="+URLEncoder.encode(street,"UTF-8");
+				paramString += "&postal="+URLEncoder.encode(postal,"UTF-8");
+			
+				JSONObject jsonTmp = executeApiCall(URL+"user/register?"+APIKEY+paramString);
+				if (jsonTmp.has("user_key")) 
+				{
+					_userKey = jsonTmp.getString("user_key");
+					SharedPreferences.Editor editor = prefs.edit();
+			        editor.putString("userKey", _userKey);
+			        editor.commit();
+				}
 				else if (jsonTmp.has("error"))
 				{
-					String error = jsonTmp.getString("error");
-					if (error.contains("already registered"))
-					{
-						_userKey = loginUser(email, pass);
-					}
-					
+					_lastError = "error:"+jsonTmp.getString("error");
+					_userKey = "";
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				_lastError = "Communication with server failed."+e.getStackTrace();
 			} 
 		}
-		return _userKey;
-		//TODO: handle error: 'email address is already registered' when email not unique.
-		//					  With this error it might be possible to just login. Try that too.
-		
-		//TODO: handle error: 'x parameters required' when required
-		//                    Throw Exception??
-
+		if (_userKey.length() > 0) return _userKey;
+		else return _lastError;
 	}
 	
 	// TODO: test login
@@ -200,26 +204,29 @@ public class ApiUtils {
 	{
 		if (_userKey.length() < 1)
 		{
-			JSONObject jsonTmp = executeApiCall(URL+"user/login?"+APIKEY);
+			String paramString = "";
+			paramString += "&email="+email;
+			paramString += "&password="+pass;
+			JSONObject jsonTmp = executeApiCall(URL+"user/login?"+APIKEY+paramString);
 			try {
-				if (jsonTmp.has("user_key")) _userKey = jsonTmp.getString("user_key");
+				if (jsonTmp.has("user_key")) 
+				{
+					_userKey = jsonTmp.getString("user_key");
+					SharedPreferences.Editor editor = prefs.edit();
+			        editor.putString("userKey", _userKey);
+			        editor.commit();
+				}
 				else if (jsonTmp.has("error"))
 				{
-					String error = jsonTmp.getString("error");
-					if (error.contains("invalid email and\\/or password"))
-					{
-						_userKey = "ERROR";
-					}
-					
+					_lastError = "error:"+jsonTmp.getString("error");
+					_userKey = "";
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} 
 		}
-		return _userKey;
-		//TODO: handle error: 'invalid email and/or password' when as described.
-		//                    Throw Exception??
-
+		if (_userKey.length() > 0) return _userKey;
+		else return _lastError;
 	}
 	
 	// TODO: test submission
@@ -238,10 +245,6 @@ public class ApiUtils {
 			} 
 		}
 		return submitOk;
-		//TODO: handle error: 'invalid user_key' when as described.
-		//                    Throw Exception??
-		//					  When email and pass available first login.
-
 	}
 	
 	public static List<Place> getHelpList()
@@ -249,68 +252,60 @@ public class ApiUtils {
 		return placesList;
 	}
 	
-	// TODO: test listing
 	public static List<Place> getHelpList(boolean getRequests, int page)
 	{
-		//if (placesList.isEmpty())
+		String params = "&page="+page;
+		if (getRequests) params += "&type=request";
+		else params += "&type=offer";
+		
+		//if (_userKey.length() < 1)
 		{
-			//placesList = new ArrayList<Place>();
-			String params = "&page="+page;
-			if (getRequests) params += "&type=request";
-			else params += "&type=offer";
+			JSONObject jsonTmp = executeApiCall(URL+"help/list?"+APIKEY+params);
+			JSONArray list = new JSONArray();
 			
-			if (_userKey.length() < 1)
+			try 
 			{
-				JSONObject jsonTmp = executeApiCall(URL+"help/list?"+APIKEY);
-				JSONArray list = new JSONArray();
-				
-				try {
-					list = jsonTmp.getJSONArray("results");
-				}
-				catch (Exception e)
+				list = jsonTmp.getJSONArray("results");
+			}
+			catch (Exception e)
+			{
+			}
+			
+			for (int i=0;i<list.length();i++)
+			{
+				try 
 				{
-				}
-				
-				for (int i=0;i<list.length();i++)
-				{
-					try {
-	
-						JSONObject t = list.getJSONObject(i);
-						//String nid = 
-						//if (t.getDouble("latitude") > 0 || t.getDouble("longitude") > 0)
-						{
-							
-							boolean needHelp = false;
-							try 
-							{
-								JSONObject tp = t.getJSONObject("type");
-								Iterator<String> it = tp.keys();
-								needHelp = it.next().equals("10");
-							}
-							catch (Exception e) 
-							{
-								
-							} 
-							Place p = new Place(t.getString("nid"), t.getString("title"),
-									"", t.getString("postal_code"), 
-									t.optDouble("latitude",0), t.optDouble("longitude",0), "", "", t.getString("description"),
-									0, 0, needHelp);
-							placesList.add(p);
-						}
-						//System.out.println(p.getName());
-					
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					JSONObject t = list.getJSONObject(i);
+					boolean needHelp = false;
+					try 
+					{
+						JSONObject tp = t.getJSONObject("type");
+						Iterator<String> it = tp.keys();
+						needHelp = it.next().equals("10");
 					}
+					catch (Exception e) 
+					{
+						
+					} 
+					Place p = new Place(t.getString("nid"), 
+							t.getString("title"),
+							"", t.getString("postal_code"), 
+							t.optDouble("latitude",0), 
+							t.optDouble("longitude",0), 
+							"", "", 
+							t.getString("description"),
+							0, 0, needHelp);
+					placesList.add(p);
+				} 
+				catch (JSONException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
 		return placesList;
-		//TODO: handle error: 'invalid email and/or password' when as described.
-		//                    Throw Exception??
 	}
-	
 	
 	///////////////////
 	public static String getCategeryName(String id)
@@ -335,6 +330,11 @@ public class ApiUtils {
 	{
 		return _userKey;
 	}
+	
+	public static void setUserKey(String key)
+	{
+		_userKey = key;
+	}
 	///////////////////
 	/**
 	 * Execute API call
@@ -344,27 +344,32 @@ public class ApiUtils {
 	 * @return JSONObject
 	 */
 	public static JSONObject executeApiCall(String url) {
-		try {
+		try 
+		{
 			URL urlObj = new URL(url);
 			InputStream is = (InputStream) urlObj.getContent();
 			String result = convertStreamToString(is);
 			JSONObject json=new JSONObject(result); 
 			return json;
 			
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			return null;
 		}
 	}
 	
 	public static JSONArray executeApiCallArray(String url) {
-		try {
+		try 
+		{
 			URL urlObj = new URL(url);
 			InputStream is = (InputStream) urlObj.getContent();
 			String result = convertStreamToString(is);
 			JSONArray json=new JSONArray(result); 
 			return json;
-			
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			return null;
 		}
 	}
@@ -398,26 +403,24 @@ public class ApiUtils {
    ///////
    public static void loadPlaces() 
 	{             
-		
 		Thread t = new Thread() 
 		{       
 			public void run() 
 			{
 				this.setName("PlaceLoader");
 				listLoaded = false;
-				// show 5 pages with markers.
+				// show not more than 5 pages with markers.
 				for (int i=0;i<5;i++)
 				{
 					List<Place> tmp = ApiUtils.getHelpList(true, i);
+					
+					// when page has less than 10 markers, it'll be likely to be the last page. So make the for loop stop.
 					if (tmp.size() < 10) i=5;
-					//placesList.addAll(tmp);
 				}
 				Log.d("downloader", ""+placesList.size());
 				listLoaded = true;
-				
 			}        
 		};        
 		t.start();  
-
 	} 
 }
