@@ -60,7 +60,8 @@ public class OfferHelp extends Activity {
 		setContentView(R.layout.offer_help);
 
 		comments = (EditText) findViewById(R.id.comments);
-
+		nextButton = (Button) findViewById(R.id.next);
+		
 		for (CategoryButton button : buttons) {
 			button.icon = (ImageView) findViewById(button.id);
 			button.selected = false;
@@ -88,7 +89,7 @@ public class OfferHelp extends Activity {
 	/**
 	 * A call-back for when the user submits the form
 	 */
-	private OnClickListener submitFormListener = new OnClickListener() {
+	OnClickListener submitFormListener = new OnClickListener() {
 
 		@Override public void onClick(View v) {
 

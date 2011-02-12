@@ -32,6 +32,10 @@
         <!-- <item name="android:background">#EE1C25</item> -->
         <item name="android:background">@drawable/red_background</item>
     </style>
+    <style name="MenuItem.Out">
+        <!-- <item name="android:background">#9F9F9F</item> -->
+        <item name="android:background">@drawable/gray_background</item>
+    </style>
     
      <style name="EditItem" parent="@android:style/Widget.EditText">
         <item name="android:layout_width">fill_parent</item>

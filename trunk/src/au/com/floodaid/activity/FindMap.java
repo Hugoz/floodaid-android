@@ -140,7 +140,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    	}
 	    	catch (Exception e)
 	    	{
-	    		Log.e(TAG, "269: "+e.getMessage());
+	    		//Log.e(TAG, "269: "+e.getMessage());
 	    	}
 	    }
 	}

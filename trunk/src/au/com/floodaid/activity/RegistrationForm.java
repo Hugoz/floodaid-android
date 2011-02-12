@@ -63,7 +63,7 @@ public class RegistrationForm extends Activity {
 		postcodeEdit = (EditText) findViewById(R.id.form_postcode);
 
 		// ronald
-		emailEdit.setText("ronald@ronsoft.nl");
+		emailEdit.setText("ronaldnooij@gmail.com");
 		passwordEdit.setText("123456");
 		phoneEdit.setText("+31625062695");
 		streetEdit.setText("Huygensstr 17");
@@ -112,11 +112,11 @@ public class RegistrationForm extends Activity {
 				Log.d(TAG, "Validation successful");
 
 				Intent intent = new Intent(getBaseContext(), AcceptTerms.class);
-				intent.putExtra("au.com.floodaid.email", emailEdit.getText());
-				intent.putExtra("au.com.floodaid.password", passwordEdit.getText());
-				intent.putExtra("au.com.floodaid.phone", phoneEdit.getText());
-				intent.putExtra("au.com.floodaid.postcode", postcodeEdit.getText());
-				intent.putExtra("au.com.floodaid.street", streetEdit.getText());
+				intent.putExtra("au.com.floodaid.email", emailEdit.getText().toString());
+				intent.putExtra("au.com.floodaid.password", passwordEdit.getText().toString());
+				intent.putExtra("au.com.floodaid.phone", phoneEdit.getText().toString());
+				intent.putExtra("au.com.floodaid.postcode", postcodeEdit.getText().toString());
+				intent.putExtra("au.com.floodaid.street", streetEdit.getText().toString());
 				intent.putExtra("au.com.floodaid.needHelp", needHelp);
 				startActivity(intent);
 			}
