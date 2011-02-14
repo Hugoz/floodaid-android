@@ -19,8 +19,11 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import au.com.floodaid.util.ApiUtils;
 import au.com.floodaid.util.InternetUtils;
@@ -54,6 +57,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	ProgressDialog dialog;
 	
 	Button btnContacts, btnRegisterToHelp, btnRegisterForHelp;
+	ProgressBar progressIndicator;
 	
 	/** 
      * Method called when activity is created
@@ -61,7 +65,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-        
+	    //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
         Log.d(TAG, "Creating FindMap activity");
         
         setContentView(R.layout.find_map);
@@ -83,7 +87,9 @@ public class FindMap extends MapActivity implements OnClickListener {
 	    mapController = mapView.getController();
 	    mapController.setZoom(11); //Fixed Zoom Level
 	    
-	 // Get Location passed by the Main activity
+	    progressIndicator = (ProgressBar) findViewById(R.id.ProgressBar01);
+
+	    // Get Location passed by the Main activity
 	    Location currentLocation = getIntent().getParcelableExtra("au.com.floodaid.CurrentLocation"); 
 		
 	   // if (currentLocation == null) 
@@ -160,7 +166,10 @@ public class FindMap extends MapActivity implements OnClickListener {
 	
 	public void placesToOverlay() 
 	{           
-		//dialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
+		//dialog = ProgressDialog.show(this, "", "");
+		//this.setProgressBarIndeterminateVisibility(true);
+		//setProgressBarIndeterminateVisibility(true); 
+		progressIndicator.setVisibility(ProgressBar.VISIBLE);
 		Thread t = new Thread() 
 		{       
 			public void run() 
@@ -191,6 +200,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	{        
 		// Back in the UI thread -- update our UI elements
 		mapView.invalidate();
+		progressIndicator.setVisibility(ProgressBar.INVISIBLE);
 		//dialog.dismiss();
 	}
 	

@@ -46,4 +46,6 @@
         android:clickable="true"
         android:apiKey="@string/mapApiKey" 
     />
+
+<ProgressBar android:layout_above="@+id/mapview" android:id="@+id/ProgressBar01" android:layout_alignRight="@+id/mapview" android:layout_height="25dp" android:layout_width="25dp" android:visibility="invisible"></ProgressBar>
 </RelativeLayout>
