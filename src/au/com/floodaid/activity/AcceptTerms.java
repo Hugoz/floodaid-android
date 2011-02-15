@@ -103,11 +103,16 @@ public class AcceptTerms extends Activity implements OnClickListener {
 				else
 				{
 					if (needHelp)
+					{
 						nextActivity(RequestHelp.class);
 						//Toast.makeText(getBaseContext(), "need help", Toast.LENGTH_SHORT).show();
+					}
 					else
+					{
 						nextActivity(OfferHelp.class);
 						//Toast.makeText(getBaseContext(), "give help", Toast.LENGTH_SHORT).show();
+					}
+					finish();
 				}
 			} else {
 				//TODO: show error
@@ -122,19 +127,6 @@ public class AcceptTerms extends Activity implements OnClickListener {
 		Intent Intent = new Intent(getBaseContext(), activity);
 		startActivity(Intent);
 	}
-
-	protected void registerUser() 
-	{     
-		//ProgressDialog pd = ProgressDialog.show(getBaseContext(), "Working..", "Register/Login user", true);
-	} 
-	
-	Handler progressHandler = new Handler() 
-	{         
-		public void handleMessage(Message msg) 
-		{   
-			//progressDialog.incrementProgressBy(increment);         
-		}     
-	};
 	
 	String terms;
 	protected void loadTermsViaAPI() 
