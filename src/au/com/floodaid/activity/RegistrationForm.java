@@ -24,31 +24,11 @@ public class RegistrationForm extends Activity {
 	TextView loginLink;
 
 	boolean needHelp = false;
-	boolean loggedIn;
 
 	@Override public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Log.d(TAG, "Creating personal information form");
-
-		// check if the user is logged in 
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		loggedIn = settings.getBoolean("au.com.floodaid.loggedIn", false);
-
-		// check if the user needs help or provides help
-		Bundle extras = getIntent().getExtras();
-		needHelp = extras.getBoolean("au.com.floodaid.needHelp");
-
-		if (loggedIn) {
-			if (!needHelp) {
-				nextActivity(OfferHelp.class);
-			} else {
-				nextActivity(RequestHelp.class);
-			}
-			// Kill this activity so users dont come back here
-			finish();
-			return;
-		}
 
 		// set the correct layout for the user (only header is different) 
 		if (needHelp)
@@ -61,6 +41,14 @@ public class RegistrationForm extends Activity {
 		phoneEdit = (EditText) findViewById(R.id.form_phone);
 		streetEdit = (EditText) findViewById(R.id.form_street);
 		postcodeEdit = (EditText) findViewById(R.id.form_postcode);
+		
+		Intent intent = getIntent();
+		emailEdit.setText(intent.getStringExtra("au.com.floodaid.email"));
+		passwordEdit.setText(intent.getStringExtra("au.com.floodaid.password"));
+		phoneEdit.setText(intent.getStringExtra("au.com.floodaid.phone"));
+		postcodeEdit.setText(intent.getStringExtra("au.com.floodaid.postcode"));
+		streetEdit.setText(intent.getStringExtra("au.com.floodaid.street"));
+		needHelp = intent.getBooleanExtra("au.com.floodaid.needHelp", false);
 
 		// ronald
 		emailEdit.setText("ronaldnooij@gmail.com");
@@ -71,14 +59,6 @@ public class RegistrationForm extends Activity {
 		
 		submit = (Button) findViewById(R.id.form_submit);
 		submit.setOnClickListener(submitFormListener);
-
-		loginLink = (TextView) findViewById(R.id.btn_login);
-		loginLink.setOnClickListener(new OnClickListener() {
-
-			@Override public void onClick(View v) {
-				nextActivity(Login.class, "au.com.floodaid.needHelp", needHelp);
-			}
-		});
 	}
 
 	/**
@@ -119,6 +99,7 @@ public class RegistrationForm extends Activity {
 				intent.putExtra("au.com.floodaid.street", streetEdit.getText().toString());
 				intent.putExtra("au.com.floodaid.needHelp", needHelp);
 				startActivity(intent);
+				finish();
 			}
 
 			else {

@@ -197,6 +197,7 @@ public class ApiUtils {
 		}
 		if (_userKey.length() > 0) return _userKey;
 		else return _lastError;
+		//return "error:test text";
 	}
 	
 	// TODO: test login
@@ -204,11 +205,12 @@ public class ApiUtils {
 	{
 		if (_userKey.length() < 1)
 		{
-			String paramString = "";
-			paramString += "&email="+email;
-			paramString += "&password="+pass;
-			JSONObject jsonTmp = executeApiCall(URL+"user/login?"+APIKEY+paramString);
 			try {
+				String paramString = "";
+				paramString += "&email="+URLEncoder.encode(email,"UTF-8");
+				paramString += "&password="+URLEncoder.encode(pass,"UTF-8");
+				JSONObject jsonTmp = executeApiCall(URL+"user/login?"+APIKEY+paramString);
+			
 				if (jsonTmp.has("user_key")) 
 				{
 					_userKey = jsonTmp.getString("user_key");
@@ -221,7 +223,7 @@ public class ApiUtils {
 					_lastError = "error:"+jsonTmp.getString("error");
 					_userKey = "";
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			} 
 		}
@@ -230,20 +232,32 @@ public class ApiUtils {
 	}
 	
 	// TODO: test submission
-	public static boolean submitHelp(String email, String pass, String phone, String street, String postal)
+	public static boolean submitHelp(String categories, String help_type, String title, String description)
 	{
-		// &categories=[5,1,8,6]&help_type=[9]&title=winner!&description=this%20is%20a%20test!
 		boolean submitOk = false;
-		if (_userKey.length() < 1)
+		try
 		{
-			JSONObject jsonTmp = executeApiCall(URL+"help/add?"+APIKEY);
-			try {
-				String tmp = jsonTmp.getString("api_status");
-				submitOk = tmp.equals("success");
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} 
+			// &categories=[5,1,8,6]&help_type=[9]&title=winner!&description=this%20is%20a%20test!
+			String paramString = "";
+			paramString += "&categories="+URLEncoder.encode(categories,"UTF-8");
+			paramString += "&help_type="+URLEncoder.encode(help_type,"UTF-8");
+			paramString += "&title="+URLEncoder.encode(title,"UTF-8");
+			paramString += "&description="+URLEncoder.encode(description,"UTF-8");
+		
+			
+			if (_userKey.length() < 1)
+			{
+				JSONObject jsonTmp = executeApiCall(URL+"help/add?"+APIKEY+paramString);
+				try {
+					String tmp = jsonTmp.getString("api_status");
+					submitOk = tmp.equals("success");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} 
+			}
 		}
+		catch (Exception e)
+		{}
 		return submitOk;
 	}
 	
