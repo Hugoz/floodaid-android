@@ -1,6 +1,8 @@
 package au.com.floodaid.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import au.com.floodaid.R;
+import au.com.floodaid.util.ApiUtils;
 import au.com.floodaid.util.FormValidator;
 
 public class Login extends Activity {
@@ -20,7 +23,7 @@ public class Login extends Activity {
 	// Layout fields
 	EditText emailEdit, passwordEdit;
 	Button submit;
-	
+	String user_key;
 	// Where to go next?
 	boolean needHelp = false;
 	
@@ -70,25 +73,39 @@ public class Login extends Activity {
 				Log.d(TAG, "Validation successful");
 				
 				 try {
-			        	//TODO: API call
-						//Api.login(emailEdit.getText(), passwordEdit.getText());
-					 	
-					 // TODO: condition if login successfull
-//					 if (loginSuccessful) {
-					 	// TODO: Store login in shared preferences
-					 
-						// Go to next activity
-					 if (!needHelp) {
-							nextActivity(OfferHelp.class);
-						} else {
-							nextActivity(RequestHelp.class);
+					 user_key = ApiUtils.loginUser(emailEdit.getText().toString(), passwordEdit.getText().toString());
+						
+						if (user_key.contains("error"))
+						{
+							//TODO: this should be checked. Dialog isn't showing for some reason.
+							AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseContext());
+							  dialog.setMessage(user_key.substring(6))
+							  .setCancelable(false)             
+							  .setNegativeButton("Ok", new DialogInterface.OnClickListener() 
+							  {           
+								  public void onClick(DialogInterface dialog, int id) 
+								  {                
+									  dialog.cancel();
+									  finish();
+								  }       
+							  });
+							  AlertDialog alert = dialog.create();
+							  alert.show();
 						}
-						 
-//					 } else {
-//						 Log.d(TAG, "Cannot login");
-//						 Toast toast = Toast.makeText(getBaseContext(), "Your email or password is incorrect, please try again", Toast.LENGTH_LONG);
-//						 toast.show();
-//					 }
+						else
+						{
+							if (needHelp)
+							{
+								nextActivity(RequestHelp.class);
+								//Toast.makeText(getBaseContext(), "need help", Toast.LENGTH_SHORT).show();
+							}
+							else
+							{
+								nextActivity(OfferHelp.class);
+								//Toast.makeText(getBaseContext(), "give help", Toast.LENGTH_SHORT).show();
+							}
+							finish();
+						}
 //					 	
 					} catch (Exception e) {
 						Toast.makeText(getBaseContext(), "Your login details are incorrect, please try again", Toast.LENGTH_SHORT);

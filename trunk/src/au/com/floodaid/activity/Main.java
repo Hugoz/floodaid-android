@@ -26,7 +26,8 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 
 	// Objects in Activity
 	Button btnContacts, btnAbout, btnRegisterToHelp, btnRegisterForHelp, btnFind;
-
+	Menu _menu;
+	MenuItem _menuItem;
 	/**
 	 * Method called when activity is created
 	 */
@@ -54,10 +55,20 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		menu.add(0, 0, 0, "Logout");
+	{		
+		_menu = menu;
+		if (ApiUtils.isLoggedIn()) menu.add(0, 0, 0, "Logout");
+		else menu.add(0, 0, 0, "Login");
+		_menuItem = menu.getItem(0);
 		return true;
 	}
+	
+	protected void onResume()
+    {
+    	super.onResume(); 
+    	if (ApiUtils.isLoggedIn() && _menuItem != null) _menuItem.setTitle("Logout");
+    	else if (_menuItem != null) _menuItem.setTitle("Login");
+    }
 	
 	/* Handles item selections */
 	public boolean onOptionsItemSelected(MenuItem item) 
@@ -65,7 +76,15 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 		switch (item.getItemId()) 
 		{   
 			case 0:        
-				ApiUtils.logOut();
+				if (ApiUtils.isLoggedIn())
+				{
+					ApiUtils.logOut();
+					item.setTitle("Login");
+				}
+				else
+				{
+					nextActivity(Login.class, "au.com.floodaid.needHelp", false);
+				}
 				break;
 		}    
 		return true;

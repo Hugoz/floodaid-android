@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import au.com.floodaid.R;
+import au.com.floodaid.util.ApiUtils;
 
 public class OfferHelp extends Activity {
 
@@ -17,17 +18,18 @@ public class OfferHelp extends Activity {
 
 	// enum for the different category buttons
 	private enum CategoryButton {
-		btnFood(R.id.btn_food, R.drawable.button_food, R.drawable.button_food_check),
-		btnConstruction(R.id.btn_construction, R.drawable.button_construction, R.drawable.button_construction_check),
-		btnGeneral(R.id.btn_general, R.drawable.button_general, R.drawable.button_general_check),
-		btnHealth(R.id.btn_health, R.drawable.button_health, R.drawable.button_health_check),
-		btnRecovery(R.id.btn_recovery, R.drawable.button_recovery, R.drawable.button_recovery_check),
-		btnSanitation(R.id.btn_sanitation, R.drawable.button_sanitation, R.drawable.button_sanitation_check),
-		btnTransport(R.id.btn_transportation, R.drawable.button_transport, R.drawable.button_transport_check),
-		btnShelter(R.id.btn_shelter, R.drawable.button_shelter, R.drawable.button_shelter_check);
+		btnFood(R.id.btn_food, 1, R.drawable.button_food, R.drawable.button_food_check),
+		btnConstruction(R.id.btn_construction, 5, R.drawable.button_construction, R.drawable.button_construction_check),
+		btnGeneral(R.id.btn_general, 8, R.drawable.button_general, R.drawable.button_general_check),
+		btnHealth(R.id.btn_health, 6, R.drawable.button_health, R.drawable.button_health_check),
+		btnRecovery(R.id.btn_recovery, 4, R.drawable.button_recovery, R.drawable.button_recovery_check),
+		btnSanitation(R.id.btn_sanitation, 7, R.drawable.button_sanitation, R.drawable.button_sanitation_check),
+		btnTransport(R.id.btn_transportation, 3, R.drawable.button_transport, R.drawable.button_transport_check),
+		btnShelter(R.id.btn_shelter, 2, R.drawable.button_shelter, R.drawable.button_shelter_check);
 
-		private CategoryButton(final int id, final int imgIdDefault, final int imgIdSelected) {
+		private CategoryButton(final int id, final int catid, final int imgIdDefault, final int imgIdSelected) {
 			this.id = id;
+			this.catid = catid;
 			this.imgIdDefault = imgIdDefault;
 			this.imgIdSelected = imgIdSelected;
 
@@ -36,6 +38,7 @@ public class OfferHelp extends Activity {
 		ImageView icon; // the icon corresponding to this enum instance
 		Boolean selected; // the button can be selected or not 
 		final Integer id; // the id of the icon imageview
+		final Integer catid; // the id of the category according to the API specs
 		final Integer imgIdDefault; // the id of the drawable to display when the icon isn't selected
 		final Integer imgIdSelected; // the id of the drawable to display in case the icon is selected
 
@@ -106,8 +109,18 @@ public class OfferHelp extends Activity {
 			if (errors.length() == 0) {
 				Log.d(TAG, "Validation successful");
 				
+				String categories = "";
+				String comma = "";
+				for (CategoryButton button : buttons) {
+					if (button.selected) 
+					{
+						categories += comma+button.catid;
+						comma = ",";
+					}
+				}
 				//TODO: API Call to submit new help offer
-				
+				//help_type: 9 = offer 10 = request
+				//ApiUtils.submitHelp(categories, "9", "title", comments.getText().toString());
 				// TODO: If success, go to Confirmation/Thank you page
 
 			

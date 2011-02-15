@@ -14,12 +14,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -33,7 +35,7 @@ public class AcceptTerms extends Activity implements OnClickListener {
 	Button btnRegister;
 	TextView txt;
 	ProgressDialog progressDialog;
-
+	
 	boolean needHelp;
 
 	String email, password, phone, postcode, street, user_key;
@@ -82,8 +84,9 @@ public class AcceptTerms extends Activity implements OnClickListener {
 	
 		public void onClick(View v) {
 			if (checkbox.isChecked()) {
+
 				user_key = ApiUtils.registerUser(email, password, phone, street, postcode);
-				
+
 				if (user_key.contains("error"))
 				{
 					AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -94,6 +97,14 @@ public class AcceptTerms extends Activity implements OnClickListener {
 						  public void onClick(DialogInterface dialog, int id) 
 						  {                
 							  dialog.cancel();
+							  Intent intent = new Intent(getBaseContext(), RegistrationForm.class);
+								intent.putExtra("au.com.floodaid.email", email);
+								intent.putExtra("au.com.floodaid.password", password);
+								intent.putExtra("au.com.floodaid.phone", phone);
+								intent.putExtra("au.com.floodaid.postcode", postcode);
+								intent.putExtra("au.com.floodaid.street", street);
+								intent.putExtra("au.com.floodaid.needHelp", needHelp);
+								startActivity(intent);
 							  finish();
 						  }       
 					  });
@@ -114,19 +125,41 @@ public class AcceptTerms extends Activity implements OnClickListener {
 					}
 					finish();
 				}
-			} else {
-				//TODO: show error
 			}
 		}
 		
-	/**
-	 * Start next activity without intent parameter
-	 * @param activity
-	 */
-	private void nextActivity(Class<?> activity) {
-		Intent Intent = new Intent(getBaseContext(), activity);
-		startActivity(Intent);
-	}
+		/**
+		 * Start registration form class, for/to help depending on the boolean.
+		 * @param activity
+		 * @param parmName
+		 * @param parmValue
+		 */
+		private void nextActivity(Class<?> activity, String parmName, boolean parmValue) {
+			Intent intent = new Intent(getBaseContext(), activity);
+			intent.putExtra(parmName, parmValue);
+			startActivity(intent);
+		}
+
+		/**
+		 * Start Next activity with a single intent parameter
+		 * @param activity
+		 * @param parmName
+		 * @param parmValue
+		 */
+		private void nextActivity(Class<?> activity, String parmName, Parcelable parmValue) {
+			Intent intent = new Intent(getBaseContext(), activity);
+			intent.putExtra(parmName, parmValue);
+			startActivity(intent);
+		}
+
+		/**
+		 * Start next activity without intent parameter
+		 * @param activity
+		 */
+		private void nextActivity(Class<?> activity) {
+			Intent Intent = new Intent(getBaseContext(), activity);
+			startActivity(Intent);
+		}
 	
 	String terms;
 	protected void loadTermsViaAPI() 

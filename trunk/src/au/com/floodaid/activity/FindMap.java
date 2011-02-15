@@ -54,7 +54,7 @@ public class FindMap extends MapActivity implements OnClickListener {
 	//private List<Place> placesList = Collections.synchronizedList(pL);
 	private List<Place> placesList = new ArrayList<Place>();
 	private MapItemsOverlay overlay;
-	ProgressDialog dialog;
+	//ProgressDialog dialog;
 	
 	Button btnContacts, btnRegisterToHelp, btnRegisterForHelp;
 	ProgressBar progressIndicator;
