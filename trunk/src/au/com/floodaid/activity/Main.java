@@ -2,9 +2,12 @@ package au.com.floodaid.activity;
 
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,6 +51,24 @@ public class Main extends GeoLocatedActivity implements OnClickListener {
 
 		btnRegisterForHelp = (Button) findViewById(R.id.btn_request_help);
 		btnRegisterForHelp.setOnClickListener(this);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		menu.add(0, 0, 0, "Logout");
+		return true;
+	}
+	
+	/* Handles item selections */
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{    
+		switch (item.getItemId()) 
+		{   
+			case 0:        
+				ApiUtils.logOut();
+				break;
+		}    
+		return true;
 	}
 	
 	protected void onDestroy()

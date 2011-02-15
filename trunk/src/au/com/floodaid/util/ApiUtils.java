@@ -335,6 +335,14 @@ public class ApiUtils {
 	{
 		_userKey = key;
 	}
+	
+	public static void logOut()
+	{
+		_userKey = "";
+		SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("userKey", _userKey);
+        editor.commit();
+	}
 	///////////////////
 	/**
 	 * Execute API call
